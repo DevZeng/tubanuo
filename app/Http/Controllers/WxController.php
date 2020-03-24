@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Libraries\Wxxcx;
 use App\Visitor;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class WxController extends Controller
 {
@@ -28,6 +29,23 @@ class WxController extends Controller
             'msg'=>'ok',
             'data'=>$access_token
         ]);
+    }
+    public function login()
+    {
+        $code = Input::get('code');
+        $url = sprintf('https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code',$this->app_id,$this->scerct,$code);
+        $wx = new Wxxcx($this->app_id,$this->scerct);
+        $data = $wx->request($url);
+        if (isset($data['openid'])){
+            return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data['openid']
+        ]);
+        }else{
+            return jsonResponse([
+                'msg'=>'error'
+            ],422);
+        }
     }
     public function addVisitor(Request $post)
     {
