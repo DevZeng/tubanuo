@@ -54,17 +54,17 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ValidationException){
             return jsonResponse([
                 'msg'=>$exception->validator->errors()->first()
-            ]);
+            ],400);
         }
         if ($exception instanceof \InvalidArgumentException){
             return jsonResponse([
                 'msg'=>$exception->errors()
-            ]);
+            ],400);
         }
         return jsonResponse([
             'msg'=>$exception->getMessage(),
             'type'=>$exception->getFile(),
             'class'=>$exception->getTraceAsString()
-        ]);
+        ],$exception->getCode());
     }
 }
