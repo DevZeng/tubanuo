@@ -31,9 +31,9 @@ class WxController extends Controller
             'data'=>$access_token
         ]);
     }
-    public function login()
+    public function login(Request $post)
     {
-        $code = Input::get('code');
+        $code = $post->code;
         $url = sprintf('https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code',$this->app_id,$this->scerct,$code);
         $wx = new Wxxcx($this->app_id,$this->scerct);
         $data = $wx->request($url);
