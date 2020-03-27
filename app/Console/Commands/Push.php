@@ -74,6 +74,9 @@ class Push extends Command
                     $url = sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
                     $wx = new Wxxcx($this->app_id,$this->scerct);
                     $redata = $wx->request($url,json_encode($data));
+                    $his = new VisitorHistory();
+                    $his->visitor_id = $visitor->visitor_id;
+                    $his->save();
                     dump($redata);
                 }
             }
