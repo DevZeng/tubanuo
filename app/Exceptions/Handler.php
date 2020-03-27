@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +51,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        if ($exception instanceof ValidationException){
+            return jsonResponse([
+                'msg'=>$exception->validator->errors()->first()
+            ]);
+        }
+        if ($exception instanceof \InvalidArgumentException){
+            return jsonResponse([
+                'msg'=>$exception->errors()
+            ]);
+        }
+        return jsonResponse([
+            'msg'=>$exception->getMessage(),
+            'type'=>$exception->getFile(),
+            'class'=>$exception->getTraceAsString()
+        ]);
     }
 }

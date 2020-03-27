@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VisitorPost;
 use App\Libraries\Wxxcx;
 use App\Visitor;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class WxController extends Controller
             ],422);
         }
     }
-    public function addVisitor(Request $post)
+    public function addVisitor(VisitorPost $post)
     {
         $visitor = new Visitor();
         $visitor->form_id = 'xxx';
