@@ -81,6 +81,8 @@ class Push extends Command
                     $his->visitor_id = $visitor->visitor_id;
                     $his->save();
                     dump($redata);
+                }else{
+                    setRedisData('refresh',1);
                 }
             }
         }
