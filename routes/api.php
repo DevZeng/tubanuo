@@ -20,3 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('access/token','WxController@getAccessToken');
 Route::get('login','WxController@login');
 Route::post('visitor','WxController@addVisitor');
+Route::get('user/getUser',"UserController@getUser");
+Route::post('user/addUser',"UserController@addUser");
+Route::post('user/addTeacher','UserController@addTeacher');
+//Route::post('user/addStudent','UserController@addStudent');
+Route::post('user/updateUser','UserController@updateUser');
+
