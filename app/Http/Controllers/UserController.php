@@ -152,6 +152,7 @@ class UserController extends Controller
             DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->update($w_data);
         }
         $res=DB::table('fb_user')->insert($data);
+        dd($res);
         if ($res){
             return response()->json(
                 [
