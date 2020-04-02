@@ -228,8 +228,8 @@ class UserController extends Controller
     }
 
     public function getStudent(Request $post){
-        $openid=$post->openid;
-        $student=DB::table('fb_parent')->where('user_openid',$openid)->get();
+        $openid=$post->user_openid;
+        $student=DB::table('fb_student')->where('user_openid',$openid)->get();
         //dd($student);
         return response()->json([
             'msg'=>"ok",
@@ -238,7 +238,16 @@ class UserController extends Controller
     }
     public function likeStudent(Request $post){
         $name=$post->name;
-        $student=DB::table('fb_student')->where('stu_name','like',"%".$name."%")->orWhere('stu_number','like',"%".$name."%")->get();
+        $student=DB::table('fb_class_message')->where('stu_name','like',"%".$name."%")->orWhere('stu_number','like',"%".$name."%")->get();
+        foreach ($student as  $key=>$value){
+            $classid=DB::table('fb_class_stu')->where('stu_number',$value->stu_number)->select('class_id')->first();
+            if ($classid){
+                $class=DB::table('fb_class')->where('class_id',$classid->class_id)->first();
+                $value->class=$class->class_grade."年级".$class->class_name;
+            }else{
+                $value->class="暂无班级信息";
+            }
+        }
         return response()->json([
             'msg'=>"ok",
             'data'=>$student
@@ -246,8 +255,15 @@ class UserController extends Controller
     }
 
     public function getOneStudent(Request $post){
-        $stu_number=$post->number;
-        $info=DB::table('fb_student')->where('stu_number',$stu_number)->first();
+        $stu_number=$post->stu_number;
+        $info=DB::table('fb_class_message')->where('stu_number',$stu_number)->first();
+        $classid=DB::table('fb_class_stu')->where('stu_number',$stu_number)->first();
+        $class=DB::table('fb_class')->where('class_id',$classid->class_id)->first();
+        if ($class){
+            $info->class=$class->class_grade."年级".$class->class_name;
+        }else{
+            $info->class="暂无班级信息";
+        }
         return response()->json([
             'msg'=>"ok",
             'data'=>$info
@@ -270,13 +286,110 @@ class UserController extends Controller
         ]);
     }
 
+    public function exStatus(Request $post){
+        $stunum=$post->stu_number;
+        $code=$post->code;
+        if ($code == 1){
+            $res=DB::table('fb_student')->where('stu_number',$stunum)->update([
+                'stu_status'=>$code
+            ]);
+            if ($res){
+                $student=DB::table('fb_student')->where('stu_number',$stunum)->first();
+                $user=DB::table('fb_user')->where('user_openid',$student->user_openid)->first();
+                $parent=[
+                    'user_openid'=>$student->user_openid,
+                    'stu_number'=>$student->stu_number,
+                    'stu_name'=>$student->stu_name,
+                    'parent_status'=>1,
+                    'user_card'=>$user->user_card,
+                    'creat_time'=>date('Y-m-d H:i:s',time()),
+                    'form_id'=>'xxx',
+                    'user_status'=>1,
+                    'relation'=>$student->relation
+                ];
+                DB::table('fb_parent')->insert($parent);
+                return response()->json([
+                    'msg'=>'ok'
+                ]);
+            }
+        }elseif($code == 2){
+            $res=DB::table('fb_student')->where('stu_number',$stunum)->update([
+                'stu_status'=>$code
+            ]);
+            if ($res){
+                return response()->json([
+                    'msg'=>"ok"
+                ]);
+            }
+        }
+
+
+
+    }
+
     public function getConfig(Request $post){
         $config=DB::table('config')->where('id',1)->first();
-        
+
         return response()->json([
             'msg'=>"ok",
             'data'=>$config
         ]);
+    }
+
+    public function saveStudent(Request $post){
+        $openid=$post->user_openid;
+        $stunum=$post->stu_number;
+        $user=DB::table('fb_user')->where('user_openid',$openid)->first();
+        $student=DB::table('fb_class_message')->where('stu_number',$stunum)->first();
+        $classid=DB::table('fb_class_stu')->where('stu_number',$student->stu_number)->first();
+        $class=DB::table('fb_class')->where('class_id',$classid->class_id)->first();
+        $data=[
+            'user_openid'=>$post->user_openid,
+            'user_name'=>$user->user_name,
+            'user_iphone'=>$user->user_iphone,
+            'stu_name'=>$student->stu_name,
+            'stu_sex'=>$student->stu_sex,
+            'stu_age'=>$student->stu_age,
+            'stu_number'=>$post->stu_number,
+            'stu_head'=>$post->stu_head,
+            'class_id'=>$classid->class_id,
+            'class_grade'=>$class->class_grade,
+            'class_name'=>$class->class_name,
+            'stu_images1'=>$post->stu_images1,
+            'stu_images2'=>1,
+            'stu_images3'=>1,
+            'relation'=>$post->relation,
+            'stu_status'=>0,
+            'form_id'=>"xx",
+            'creat_time'=>date('Y-m-d H:i:s',time())
+        ];
+        $check=DB::table('fb_student')->where('user_openid',$openid)->where('stu_number',$stunum)->first();
+        if (empty($check)){
+            $res=DB::table('fb_student')->insert($data);
+            if($res){
+                return response()->json([
+                    'msg'=>'ok'
+                ]);
+            }
+        }else{
+            $res=DB::table('fb_student')->where('stu_number',$post->stu_number)->update([
+                'stu_head'=>$post->stu_head,
+                'stu_images1'=>$post->stu_images1,
+                'relation'=>$post->relation,
+                'stu_status'=>0,
+            ]);
+            if($res){
+                return response()->json([
+                    'msg'=>'ok'
+                ]);
+            }
+        }
+
+
+
+
+
+
     }
 
 }

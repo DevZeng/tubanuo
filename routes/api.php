@@ -29,7 +29,8 @@ Route::get('user/getStudent','UserController@getStudent');//获取父母下的�
 Route::get('user/likeStudent','UserController@likeStudent');//模糊搜索学生信息
 Route::get('user/getOneStudent','UserController@getOneStudent');//获取指定学生的信息
 
-Route::get('user/exStudent','UserController@exStudent');//班主任审核家长绑定学生信息
-Route::post('user/addStudent','UserController@addStudent');//提交绑定学生信息给班主任审核
-Route::post('user/addStudent','UserController@addStudent');
+Route::get('user/exStudent','UserController@exStudent');//获取班主任审核家长绑定学生信息
+//Route::post('user/addStudent','UserController@addStudent');
+Route::get('user/exStatus','UserController@exStatus');//提交审核状态
+Route::post('user/saveStudent','UserController@saveStudent');//保存学生信息
 Route::get('user/config','UserController@getConfig');
