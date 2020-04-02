@@ -227,4 +227,56 @@ class UserController extends Controller
         dd($data);
     }
 
+    public function getStudent(Request $post){
+        $openid=$post->openid;
+        $student=DB::table('fb_parent')->where('user_openid',$openid)->get();
+        //dd($student);
+        return response()->json([
+            'msg'=>"ok",
+            'data'=>$student
+        ]);
+    }
+    public function likeStudent(Request $post){
+        $name=$post->name;
+        $student=DB::table('fb_student')->where('stu_name','like',"%".$name."%")->orWhere('stu_number','like',"%".$name."%")->get();
+        return response()->json([
+            'msg'=>"ok",
+            'data'=>$student
+        ]);
+    }
+
+    public function getOneStudent(Request $post){
+        $stu_number=$post->number;
+        $info=DB::table('fb_student')->where('stu_number',$stu_number)->first();
+        return response()->json([
+            'msg'=>"ok",
+            'data'=>$info
+        ]);
+    }
+
+    public function exStudent(Request $post){
+        $teacher=$post->user_openid;
+        //dd($teacher);
+        $classid=DB::table('fb_teacher_apply')->where('user_openid',$teacher)->select('class_id')->first();
+        //dd($classid);
+        $student=DB::table('fb_student')->where('class_id',$classid->class_id)->where('stu_status',0)->get();
+        foreach ($student as $key=>$value){
+            $parent=DB::table('fb_user')->where('user_openid',$value->user_openid)->first();
+            $value->user=$parent;
+        }
+        return response()->json([
+            'msg'=>"ok",
+            'data'=>$student
+        ]);
+    }
+
+    public function getConfig(Request $post){
+        $config=DB::table('config')->where('id',1)->first();
+        
+        return response()->json([
+            'msg'=>"ok",
+            'data'=>$config
+        ]);
+    }
+
 }
