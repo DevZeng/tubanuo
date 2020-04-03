@@ -272,8 +272,10 @@ class UserController extends Controller
             $student=DB::table('fb_student')->where('stu_number',$stu_number)->first();
             if ($student){
                 $info->stu_head=$student->stu_head;
+                $info->stu_image=$student->stu_image;
             }else{
                 $info->stu_head="";
+                $info->stu_image="";
             }
             $info->class=$class->class_grade."年级".$class->class_name;
         }else{
