@@ -44,6 +44,15 @@ class UserController extends Controller
             }
         }
     }
+
+    public function getClass(){
+        $class=DB::table('fb_class')->get();
+        return response()->json([
+            'msg'=>"ok",
+            'data'=>$class
+        ]);
+    }
+
     public function updateUser(Request $post){
         $userid=$post->user_id;
         $data=[

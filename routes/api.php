@@ -24,6 +24,7 @@ Route::get('user/getUser',"UserController@getUser");
 Route::post('user/addUser',"UserController@addUser");
 Route::post('user/addTeacher','UserController@addTeacher');
 Route::post('user/updateUser','UserController@updateUser');
+Route::get('user/class','UserController@getClass');
 //学生信息
 Route::get('user/getStudent','UserController@getStudent');//获取父母下的子女信息
 Route::get('user/likeStudent','UserController@likeStudent');//模糊搜索学生信息
