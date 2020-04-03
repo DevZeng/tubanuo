@@ -269,6 +269,12 @@ class UserController extends Controller
         $classid=DB::table('fb_class_stu')->where('stu_number',$stu_number)->first();
         $class=DB::table('fb_class')->where('class_id',$classid->class_id)->first();
         if ($class){
+            $student=DB::table('fb_student')->where('stu_number',$stu_number)->first();
+            if ($student){
+                $info->stu_head=$student->stu_head;
+            }else{
+                $info->stu_head="";
+            }
             $info->class=$class->class_grade."年级".$class->class_name;
         }else{
             $info->class="暂无班级信息";
@@ -317,6 +323,9 @@ class UserController extends Controller
                     'relation'=>$student->relation
                 ];
                 DB::table('fb_parent')->insert($parent);
+                DB::table('fb_class_message')->where('stu_number',$stunum)->update([
+                    'stu_image'=>$student->stu_image
+                ]);
                 return response()->json([
                     'msg'=>'ok'
                 ]);
