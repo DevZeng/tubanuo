@@ -135,7 +135,7 @@ class UserController extends Controller
                         'user_images2'=>1,
                         'date1'=>$post->date1,
                         'staff_status'=>0,
-                        'creat_time'=>date('Y-m-d H:i:s',time())
+                        'creatime'=>date('Y-m-d H:i:s',time())
                     ];
 
                     //dd($w_data);
@@ -148,7 +148,7 @@ class UserController extends Controller
                         'user_images2'=>1,
                         'date1'=>$post->date1,
                         'staff_status'=>0,
-                        'creat_time'=>date('Y-m-d H:i:s',time())
+                        'creatime'=>date('Y-m-d H:i:s',time())
                     ];
                     DB::table('fb_sch_staff')->insert($w_data);
                 }
