@@ -72,7 +72,7 @@ class UserController extends Controller
             'user_sex'=>$post->user_sex,
             'whether'=>$post->whether,
         ];
-        dd($data);
+        //dd($data);
         $teacher=DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->first();
         //dd($teacher);
         $checkwork=DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->first();
@@ -127,7 +127,7 @@ class UserController extends Controller
 
                     ]);
                 }
-
+                    dd(123);
                 if ($checkwork !== null){
                     $w_data=[
                         'user_openid'=>$post->user_openid,
