@@ -132,9 +132,10 @@ class UserController extends Controller
                         'user_openid'=>$post->user_openid,
                         'positions'=>$post->positions,
                         'user_images1'=>$post->user_images1,
+                        'user_images2'=>1,
                         'date1'=>$post->date1,
                         'staff_status'=>0,
-                        'update_time'=>date('Y-m-d H:i:s',time())
+                        'creat_time'=>date('Y-m-d H:i:s',time())
                     ];
 
                     //dd($w_data);
@@ -144,22 +145,19 @@ class UserController extends Controller
                         'user_openid'=>$post->user_openid,
                         'positions'=>$post->positions,
                         'user_images1'=>$post->user_images1,
+                        'user_images2'=>1,
                         'date1'=>$post->date1,
                         'staff_status'=>0,
-                        'update_time'=>date('Y-m-d H:i:s',time())
+                        'creat_time'=>date('Y-m-d H:i:s',time())
                     ];
                     DB::table('fb_sch_staff')->insert($w_data);
                 }
             }
         }
-
         DB::table('fb_user')->where('user_openid',$userid)->update($data);
-
         return response()->json([
             'msg'=>"ok"
         ]);
-
-
     }
     public function addUser(Request $post){
         $data=[
