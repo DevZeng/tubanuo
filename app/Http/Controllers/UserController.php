@@ -150,6 +150,7 @@ class UserController extends Controller
                 }
             }
         }
+        dd($data);
         DB::table('fb_user')->where('user_openid',$userid)->update($data);
 
         return response()->json([
