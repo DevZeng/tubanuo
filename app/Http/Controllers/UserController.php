@@ -18,14 +18,15 @@ class UserController extends Controller
             $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->select('whether',"class_id",'work_number','subjects','status','creat_time')->first();
 
             $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
-            dd($class);
+            //dd($class);
             $user->class_grade=$class->class_grade;
             $user->class_name=$class->class_name;
             $user->work_number=$teach->work_number;
             $user->user_head1=$teach->user_head1;
             $user->subjects=$teach->subjects;
             $user->status=$teach->status;
-           // dd($user);
+            
+           //dd($user);
             return response()->json([
                 'msg'=>'ok',
                 'user'=>$user
