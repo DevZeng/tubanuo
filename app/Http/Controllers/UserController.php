@@ -14,18 +14,17 @@ class UserController extends Controller
     public function getUser(Request $post){
         $openid=$post->user_openid;
         $user=DB::table('fb_user')->where('user_openid',$openid)->first();
+
         if($user->teacher == 1){
             $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->select('whether',"class_id",'work_number','subjects','status','creat_time')->first();
-
             $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
-            //dd($class);
+            dd($teach);
             $user->class_grade=$class->class_grade;
             $user->class_name=$class->class_name;
             $user->work_number=$teach->work_number;
             $user->user_head1=$teach->user_head1;
             $user->subjects=$teach->subjects;
             $user->status=$teach->status;
-
             return response()->json([
                 'msg'=>'ok',
                 'user'=>$user
@@ -411,6 +410,7 @@ class UserController extends Controller
         ];
         //dd($data);
         $check=DB::table('fb_student')->where('user_openid',$openid)->where('stu_number',$stunum)->first();
+        //dd($check);
         if (empty($check)){
             $res=DB::table('fb_student')->insert($data);
             if($res){
