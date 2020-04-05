@@ -398,7 +398,7 @@ class UserController extends Controller
             'class_id'=>$classid->class_id,
             'class_grade'=>$class->class_grade,
             'class_name'=>$class->class_name,
-            'stu_images1'=>$post->stu_images1,
+            'stu_images1'=>$post->stu_image,
             'stu_images2'=>1,
             'stu_images3'=>1,
             'relation'=>$post->relation,
