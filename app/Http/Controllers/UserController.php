@@ -32,6 +32,7 @@ class UserController extends Controller
             if ($worker){
                 $user->positions=$worker->positions;
                 $user->date1=$worker->date1;
+                $user->user_images1=$worker->user_images1;
                 $user->staff_status=$worker->staff_status;
                 return response()->json([
                     'msg'=>"ok",
