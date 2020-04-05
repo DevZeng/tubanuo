@@ -72,7 +72,7 @@ class UserController extends Controller
             'user_sex'=>$post->user_sex,
             'whether'=>$post->whether,
         ];
-        //dd($data);
+        dd($post->staff_status);
         $teacher=DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->first();
         //dd($teacher);
         $checkwork=DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->first();
@@ -117,7 +117,7 @@ class UserController extends Controller
             }
 
         }else{
-            if ($post->staff_status){
+            if (isset($post->staff_status)){
                 if ($teacher){
                     //dd(123);
                     DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->delete();
