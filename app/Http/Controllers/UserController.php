@@ -28,7 +28,7 @@ class UserController extends Controller
                 'user'=>$user
             ]);
         }else{
-            $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status')->first();
+            $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->first();
             if ($worker){
                 $user->positions=$worker->positions;
                 $user->date1=$worker->date1;
