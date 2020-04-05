@@ -137,7 +137,7 @@ class UserController extends Controller
                         'update_time'=>date('Y-m-d H:i:s',time())
                     ];
 
-                    dd($w_data);
+                    //dd($w_data);
                     DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->update($w_data);
                 }else{
                     $w_data=[
