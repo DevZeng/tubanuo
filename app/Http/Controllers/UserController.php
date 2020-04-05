@@ -406,6 +406,7 @@ class UserController extends Controller
             'form_id'=>"xx",
             'creat_time'=>date('Y-m-d H:i:s',time())
         ];
+        //dd($data);
         $check=DB::table('fb_student')->where('user_openid',$openid)->where('stu_number',$stunum)->first();
         if (empty($check)){
             $res=DB::table('fb_student')->insert($data);
@@ -417,7 +418,7 @@ class UserController extends Controller
         }else{
             $res=DB::table('fb_student')->where('stu_number',$post->stu_number)->update([
                 'stu_head'=>$post->stu_head,
-                'stu_images1'=>$post->stu_images1,
+                'stu_images1'=>$post->stu_image,
                 'relation'=>$post->relation,
                 'stu_status'=>0,
             ]);
