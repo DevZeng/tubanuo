@@ -298,7 +298,7 @@ class UserController extends Controller
                 $info->stu_images1=$student->stu_images1;
             }else{
                 $info->stu_head="";
-                $info->stu_images1="";
+                $info->stu_image="";
             }
             $info->class=$class->class_grade."年级".$class->class_name;
         }else{
