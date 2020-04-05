@@ -16,7 +16,7 @@ class UserController extends Controller
         $user=DB::table('fb_user')->where('user_openid',$openid)->first();
 
         if($user->teacher == 1){
-            $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->select('whether',"class_id",'work_number','subjects','status','creat_time')->first();
+            $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->first();
             $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
             dd($teach);
             $user->class_grade=$class->class_grade;
