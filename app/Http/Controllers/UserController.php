@@ -55,7 +55,7 @@ class UserController extends Controller
     }
 
     public function updateUser(Request $post){
-        $userid=$post->user_id;
+        $userid=$post->user_openid;
         $data=[
             'creat_time'=>date('Y-m-d H:i:s',time()),
             'teacher'=>$post->teacher,
@@ -66,16 +66,21 @@ class UserController extends Controller
             'user_id'=>$post->user_id,
             'user_image'=>$post->user_image,
             'user_iphone'=>$post->user_iphone,
-
             'user_name'=>$post->user_name,
             'user_openid'=>$post->user_openid,
             'user_sex'=>$post->user_sex,
-
             'whether'=>$post->whether,
         ];
-
+        //dd($data);
+        $teacher=DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->first();
+        //dd($teacher);
+        $checkwork=DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->first();
+        //dd($checkwork);
         if ($post->teacher == 1){
-            $teacher=DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->first();
+            //dd(321);
+            if ($checkwork){
+                DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->delete();
+            }
             if ($teacher == null){
                 $t_data=[
                     'user_openid'=>$post->user_openid,
@@ -86,28 +91,44 @@ class UserController extends Controller
                     'work_number'=>$post->work_number,
                     'subjects'=>$post->subjects,
                     'status'=>1,
-                    'form_id'=>"xxx"
+                    'form_id'=>"xxx",
+                    'creat_time'=>date('Y-m-d H:i:s',time()),
                 ];
+
                 DB::table('fb_teacher_apply')->insert($t_data);
+
             }else{
                 $t_data=[
                     'user_openid'=>$post->user_openid,
                     'whether'=>$post->whether,
                     'user_head1'=>$post->user_head1,
-                    'user_head2'=>$post->user_head2,
+                    'user_head2'=>1,
                     'class_id'=>$post->class_id,
                     'work_number'=>$post->work_number,
                     'subjects'=>$post->subjects,
                     'status'=>1,
-                    'form_id'=>"xxx"
+                    'form_id'=>"xxx",
+                    'creat_time'=>date('Y-m-d H:i:s',time()),
                 ];
+                //dd($t_data);
                 DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->update($t_data);
+                //dd($res);
             }
 
         }else{
+
             if ($post->staff_status){
-                $worker=DB::table('fb_sch_staff')->where('user_openid',$post->user_openid)->first();
-                if ($worker !== null){
+                if ($teacher){
+                    //dd(123);
+                    DB::table('fb_teacher_apply')->where('user_openid',$post->user_openid)->delete();
+                    DB::table('fb_user')->where('user_openid',$post->user_openid)->update([
+                        'teacher'=>0,
+                        'whether'=>0,
+
+                    ]);
+                }
+                //dd($checkwork);
+                if ($checkwork !== null){
                     $w_data=[
                         'positions'=>$post->positions,
                         'user_images1'=>$post->user_images1,
@@ -129,7 +150,7 @@ class UserController extends Controller
                 }
             }
         }
-        $res=DB::table('fb_user')->where('userid',$userid)->update($data);
+        $res=DB::table('fb_user')->where('user_openid',$userid)->update($data);
         if ($res){
             return response()->json([
                 'msg'=>"ok"
