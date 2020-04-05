@@ -117,7 +117,6 @@ class UserController extends Controller
             }
 
         }else{
-
             if ($post->staff_status){
                 if ($teacher){
                     //dd(123);
@@ -128,9 +127,10 @@ class UserController extends Controller
 
                     ]);
                 }
-                //dd($checkwork);
+                dd($checkwork);
                 if ($checkwork !== null){
                     $w_data=[
+                        'user_openid'=>$post->user_openid,
                         'positions'=>$post->positions,
                         'user_images1'=>$post->user_images1,
                         'date1'=>$post->date1,
