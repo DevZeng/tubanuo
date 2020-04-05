@@ -25,8 +25,8 @@ class UserController extends Controller
             $user->user_head1=$teach->user_head1;
             $user->subjects=$teach->subjects;
             $user->status=$teach->status;
-            
-           //dd($user);
+
+           dd($user);
             return response()->json([
                 'msg'=>'ok',
                 'user'=>$user
