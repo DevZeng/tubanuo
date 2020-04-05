@@ -14,6 +14,7 @@ class UserController extends Controller
     public function getUser(Request $post){
         $openid=$post->user_openid;
         $user=DB::table('fb_user')->where('user_openid',$openid)->first();
+        dd($user);
         if($user->teacher == 1){
             $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->select('whether',"class_id",'work_number','subjects','status','creat_time')->first();
 
@@ -25,8 +26,6 @@ class UserController extends Controller
             $user->user_head1=$teach->user_head1;
             $user->subjects=$teach->subjects;
             $user->status=$teach->status;
-
-           dd($user);
             return response()->json([
                 'msg'=>'ok',
                 'user'=>$user
