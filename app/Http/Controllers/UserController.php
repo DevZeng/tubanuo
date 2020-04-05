@@ -20,6 +20,7 @@ class UserController extends Controller
             $user->class_grade=$class->class_grade;
             $user->class_name=$class->class_name;
             $user->work_number=$teach->work_number;
+            $user->user_head1=$teach->user_head1;
             $user->subjects=$teach->subjects;
             $user->status=$teach->status;
             return response()->json([
