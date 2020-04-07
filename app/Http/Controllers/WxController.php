@@ -16,9 +16,24 @@ class WxController extends Controller
     //
     private $app_id = 'wxa45e3bb7239c5059';
     private $scerct = '65c369313719a3e02d9b905f13d9981e';
-    public function getAccessToken()
+    public function getAccessToken(Request $post)
     {
         $access_token = getUserToken('access_token');
+        $force = $post->get('force',0);
+        if ($force){
+            $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s',$this->app_id,$this->scerct);
+            $wx = new Wxxcx($this->app_id,$this->scerct);
+            $data = $wx->request($url);
+//            dump($data);
+            if (isset($data['access_token'])){
+                setRedisData('access_token',$data['access_token'],7000);
+                $access_token = $data['access_token'];
+            }
+            return jsonResponse([
+                'msg'=>'ok',
+                'data'=>$access_token
+            ]);
+        }
         if (!$access_token){
             $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s',$this->app_id,$this->scerct);
             $wx = new Wxxcx($this->app_id,$this->scerct);
