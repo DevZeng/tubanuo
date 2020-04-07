@@ -31,7 +31,7 @@ class UserController extends Controller
             $user->work_number=$teach?$teach->work_number:'';
             $user->user_head1=$teach?$teach->user_head1:'';
             $user->subjects=$teach?$teach->subjects:'';
-            $user->status=$teach?$teach->status:'';
+            $user->status=$teach?$teach->status:0;
             $user->teacher = $teach?1:0;
             $user->whether = $teach?$teach->whether:0;
             return response()->json([
