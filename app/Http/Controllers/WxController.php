@@ -70,7 +70,7 @@ class WxController extends Controller
     public function insert_user(Request $post)
     {
         $token = getRedisData('access_token');
-        $open_id = $post->open_id;
+        $open_id = $post->user_openid;
         $url = sprintf('https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN',$token,$open_id);
         $wx = new Wxxcx($this->app_id,$this->scerct);
         $data = $wx->request($url);
