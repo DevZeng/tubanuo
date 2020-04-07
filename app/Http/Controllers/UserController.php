@@ -21,10 +21,13 @@ class UserController extends Controller
         }
 //        if($user->teacher == 1){
             $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->orderBy('user_id','DESC')->first();
-            $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
-            //dd($teach);
-            $user->class_grade=$class?$class->class_grade:'';
-            $user->class_name=$class?$class->class_name:'';
+            if ($teach){
+                $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
+                $user->class_grade=$class?$class->class_grade:'';
+                $user->class_name=$class?$class->class_name:'';
+            }
+        //dd($teach);
+
             $user->work_number=$teach?$teach->work_number:'';
             $user->user_head1=$teach?$teach->user_head1:'';
             $user->subjects=$teach?$teach->subjects:'';
