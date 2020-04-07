@@ -133,7 +133,7 @@ class WxController extends Controller
     }
     public function getGrade()
     {
-        $Data = DB::table('fb_grade')->get();
+        $Data = DB::table('fb_grade')->pluck('class_grade')->get();
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$Data
@@ -142,9 +142,16 @@ class WxController extends Controller
     public function getClassByGrade(Request $post)
     {
         $class = DB::table('fb_class')->where('class_grade','=',$post->grade)->get();
+        $data = [];
+        if (!empty($class)){
+            for ($i=0;$i<count($class);$i++){
+                $data[$i]['text'] = $class[$i]['class_name'];
+                $data[$i]['class_id'] = $class[$i]['class_id'];
+            }
+        }
         return jsonResponse([
             'msg'=>'ok',
-            'data'=>$class
+            'data'=>$data
         ]);
     }
 
