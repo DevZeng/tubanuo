@@ -9,6 +9,7 @@ use App\Models\TeacherApply;
 use App\Models\WxUser;
 use App\Visitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 
 class WxController extends Controller
@@ -130,4 +131,21 @@ class WxController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function getGrade()
+    {
+        $Data = DB::table('fb_grade')->get();
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$Data
+        ]);
+    }
+    public function getClassByGrade(Request $post)
+    {
+        $class = DB::table('fb_class')->where('class_grade','=',$post->grade)->get();
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$class
+        ]);
+    }
+
 }
