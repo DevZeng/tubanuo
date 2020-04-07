@@ -20,21 +20,21 @@ class UserController extends Controller
             ]);
         }
 //        if($user->teacher == 1){
-            $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->first();
+            $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->orderBy('user_id','DESC')->first();
             $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
             //dd($teach);
-            $user->class_grade=$class->class_grade;
-            $user->class_name=$class->class_name;
-            $user->work_number=$teach->work_number;
-            $user->user_head1=$teach->user_head1;
-            $user->subjects=$teach->subjects;
-            $user->status=$teach->status;
+            $user->class_grade=$class?$class->class_grade:'';
+            $user->class_name=$class?$class->class_name:'';
+            $user->work_number=$teach?$teach->work_number:'';
+            $user->user_head1=$teach?$teach->user_head1:'';
+            $user->subjects=$teach?$teach->subjects:'';
+            $user->status=$teach?$teach->status:'';
             return response()->json([
                 'msg'=>'ok',
                 'user'=>$user
             ]);
 //        }else{
-            $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->first();
+            $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->orderBy('staff_id','DESC')->first();
             if ($worker){
                 $user->positions=$worker->positions;
                 $user->date1=$worker->date1;
