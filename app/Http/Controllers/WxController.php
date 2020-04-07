@@ -76,6 +76,10 @@ class WxController extends Controller
         $data = $wx->request($url);
         if (!isset($data['openid'])){
             setRedisData('refresh',1);
+            return jsonResponse([
+                'msg'=>'error',
+                'data'=>$data
+            ],500);
         }
         $user = WxUser::where('user_openid','=',$data['openid'])->first();
         if (!$user){
