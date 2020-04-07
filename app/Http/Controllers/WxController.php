@@ -92,6 +92,7 @@ class WxController extends Controller
             $user->user_openid = $data['openid'];
             $user->user_image = $data['headimgurl'];
             $user->user_alias = $data['nickname'];
+            $user->creat_time = date('Y-m-d H:i:s');
         }
         $user->user_name = $post->user_name;
         $user->user_sex = $post->user_sex;
