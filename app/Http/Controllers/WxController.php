@@ -93,7 +93,7 @@ class WxController extends Controller
         $user->save();
         if ($teacher==1){
             $apply = new TeacherApply();
-            $apply->user_open_id = $user->user_openid;
+            $apply->user_openid = $user->user_openid;
             $apply->work_number = $post->work_number;
             $apply->user_card = $user->user_card;
             $apply->whether = $whether;
@@ -104,7 +104,7 @@ class WxController extends Controller
         }
         if ($staff_status==1){
             $staff = new Staff();
-            $staff->user_open_id = $user->user_openid;
+            $staff->user_openid = $user->user_openid;
             $staff->positions = $positions;
             $staff->date1 = $date1;
             $staff->user_images1 = $post->user_images1;
