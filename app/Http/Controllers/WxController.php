@@ -48,6 +48,15 @@ class WxController extends Controller
             ],422);
         }
     }
+    public function insert_user(Request $post)
+    {
+        $token = getRedisData('access_token');
+        $open_id = $post->open_id;
+        $url = sprintf('https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN');
+        $wx = new Wxxcx($this->app_id,$this->scerct);
+        $data = $wx->request($url);
+        dd($data);
+    }
     public function addVisitor(VisitorPost $post)
     {
         $visitor = new Visitor();

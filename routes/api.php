@@ -35,3 +35,4 @@ Route::get('user/exStudent','UserController@exStudent');//获取班主任审核�
 Route::get('user/exStatus','UserController@exStatus');//提交审核状态
 Route::post('user/saveStudent','UserController@saveStudent');//保存学生信息
 Route::get('user/config','UserController@getConfig');
+Route::get('insert_user','WxController@insert_user');
