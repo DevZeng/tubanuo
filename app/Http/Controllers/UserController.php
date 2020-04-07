@@ -19,7 +19,7 @@ class UserController extends Controller
                 'msg'=>'error'
             ]);
         }
-        if($user->teacher == 1){
+//        if($user->teacher == 1){
             $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->first();
             $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
             //dd($teach);
@@ -33,7 +33,7 @@ class UserController extends Controller
                 'msg'=>'ok',
                 'user'=>$user
             ]);
-        }else{
+//        }else{
             $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->first();
             if ($worker){
                 $user->positions=$worker->positions;
@@ -50,7 +50,7 @@ class UserController extends Controller
                     'user'=>$user
                 ]);
             }
-        }
+//        }
     }
 
     public function getClass(){
