@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\VisitorPost;
 use App\Libraries\Wxxcx;
+use App\Models\Staff;
+use App\Models\TeacherApply;
+use App\Models\WxUser;
 use App\Visitor;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
@@ -55,7 +58,48 @@ class WxController extends Controller
         $url = sprintf('https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN',$token,$open_id);
         $wx = new Wxxcx($this->app_id,$this->scerct);
         $data = $wx->request($url);
-        dd($data);
+        $user = WxUser::where('user_openid','=',$data['openid'])->first();
+        if (!$user){
+            $user = new WxUser();
+            $user->user_openid = $data['openid'];
+            $user->user_image = $data['headimgurl'];
+            $user->user_alias = $data['nickname'];
+        }
+        $user->user_name = $post->user_name;
+        $user->user_sex = $post->user_sex;
+        $user->user_iphone = $post->user_iphone;
+        $user->user_card = $post->user_card;
+        $user->user_address = $post->user_address;
+        $teacher = $post->teacher;
+        $whether = $post->whether;
+        $positions = $post->positions;
+        $date1 = $post->date1;
+        $staff_status = $post->staff_status;
+        $user->save();
+        if ($teacher==1){
+            $apply = new TeacherApply();
+            $apply->user_open_id = $user->user_openid;
+            $apply->work_number = $post->work_number;
+            $apply->user_card = $user->user_card;
+            $apply->whether = $whether;
+            $apply->class_id = $post->class_id;
+            $apply->user_head1 = $post->user_head1;
+            $apply->subjects = $post->subjects;
+            $apply->save();
+        }
+        if ($staff_status==1){
+            $staff = new Staff();
+            $staff->user_open_id = $user->user_openid;
+            $staff->positions = $positions;
+            $staff->date1 = $date1;
+            $staff->user_images1 = $post->user_images1;
+            $staff->save();
+        }
+//        if ($data[''])
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+//        dd($data);
     }
     public function addVisitor(VisitorPost $post)
     {
