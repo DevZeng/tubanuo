@@ -99,7 +99,6 @@ class WxController extends Controller
         return jsonResponse([
             'msg'=>'ok'
         ]);
-//        dd($data);
     }
     public function addVisitor(VisitorPost $post)
     {

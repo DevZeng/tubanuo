@@ -39,16 +39,28 @@ class CheckToken extends Command
     public function handle()
     {
         //
-        $refresh = getUserToken('refresh');
-        if ($refresh==1){
+        $access_token = getUserToken('access_token');
+        if ($access_token){
+            $refresh = getUserToken('refresh');
+            if ($refresh==1){
+                $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s',$this->app_id,$this->scerct);
+                $wx = new Wxxcx('wxa45e3bb7239c5059','65c369313719a3e02d9b905f13d9981e');
+                $data = $wx->request($url);
+                if (isset($data['access_token'])){
+                    setRedisData('access_token',$data['access_token'],7000);
+                    setRedisData('refresh',2);
+//                $access_token = $data['access_token'];
+                }
+            }
+        }else{
             $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s',$this->app_id,$this->scerct);
             $wx = new Wxxcx('wxa45e3bb7239c5059','65c369313719a3e02d9b905f13d9981e');
             $data = $wx->request($url);
             if (isset($data['access_token'])){
                 setRedisData('access_token',$data['access_token'],7000);
                 setRedisData('refresh',2);
-//                $access_token = $data['access_token'];
             }
         }
+
     }
 }
