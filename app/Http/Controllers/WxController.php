@@ -133,7 +133,7 @@ class WxController extends Controller
     }
     public function getGrade()
     {
-        $Data = DB::table('fb_grade')->pluck('class_grade')->get();
+        $Data = DB::table('fb_grade')->pluck('class_grade')->all();
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$Data
