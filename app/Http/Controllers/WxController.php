@@ -145,8 +145,8 @@ class WxController extends Controller
         $data = [];
         if (!empty($class)){
             for ($i=0;$i<count($class);$i++){
-                $data[$i]['text'] = $class[$i]['class_name'];
-                $data[$i]['class_id'] = $class[$i]['class_id'];
+                $data[$i]['text'] = $class[$i]->class_name;
+                $data[$i]['class_id'] = $class[$i]->class_id;
             }
         }
         return jsonResponse([
