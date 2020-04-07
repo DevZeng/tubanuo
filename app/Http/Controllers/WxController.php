@@ -120,6 +120,13 @@ class WxController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function test()
+    {
+        $url = sprintf('https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN',$token,$open_id);
+        $wx = new Wxxcx($this->app_id,$this->scerct);
+        $data = $wx->request($url);
+        dd($data);
+    }
     public function addVisitor(VisitorPost $post)
     {
         $visitor = new Visitor();

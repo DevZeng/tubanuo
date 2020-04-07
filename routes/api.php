@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('access/token','WxController@getAccessToken');
 Route::get('login','WxController@login');
+Route::get('test','WxController@test');
 Route::post('visitor','WxController@addVisitor');
 Route::get('user/getUser',"UserController@getUser");
 Route::post('user/addUser',"UserController@addUser");
