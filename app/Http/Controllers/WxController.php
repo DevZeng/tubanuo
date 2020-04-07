@@ -122,6 +122,8 @@ class WxController extends Controller
     }
     public function test()
     {
+        $token = getRedisData('access_token');
+        $open_id = 'oaHn-0Uz5B2GCTk2W4-1H3wXoItE';
         $url = sprintf('https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN',$token,$open_id);
         $wx = new Wxxcx($this->app_id,$this->scerct);
         $data = $wx->request($url);
