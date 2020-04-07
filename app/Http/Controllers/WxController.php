@@ -75,16 +75,7 @@ class WxController extends Controller
         $wx = new Wxxcx($this->app_id,$this->scerct);
         $data = $wx->request($url);
         if (!isset($data['openid'])){
-            $url2 = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s',$this->app_id,$this->scerct);
-            $wx = new Wxxcx($this->app_id,$this->scerct);
-            $data = $wx->request($url2);
-//            dump($data);
-            if (isset($data['access_token'])){
-                setRedisData('access_token',$data['access_token'],7000);
-                $access_token = $data['access_token'];
-            }
-            $url = sprintf('https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN',$access_token,$open_id);
-            $data = $wx->request($url);
+            setRedisData('refresh',1);
         }
         $user = WxUser::where('user_openid','=',$data['openid'])->first();
         if (!$user){
