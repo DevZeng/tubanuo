@@ -98,7 +98,7 @@ class WxController extends Controller
         $whether = $post->whether;
         $positions = $post->positions;
         $date1 = $post->date1;
-        $staff_status = $post->staff_status;
+        $staff_status = $post->get('staff_status',null);
         $user->save();
         if ($teacher==1){
             $apply = new TeacherApply();
@@ -111,7 +111,7 @@ class WxController extends Controller
             $apply->subjects = $post->subjects;
             $apply->save();
         }
-        if ($staff_status==1){
+        if (isset($staff_status)&&$staff_status==0){
             $staff = new Staff();
             $staff->user_openid = $user->user_openid;
             $staff->positions = $positions;
