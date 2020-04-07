@@ -8,4 +8,6 @@ class TeacherApply extends Model
 {
     //
     protected $table = 'fb_teacher_apply';
+    public const CREATED_AT = null;
+    public const UPDATED_AT = null;
 }

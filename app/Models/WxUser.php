@@ -8,4 +8,6 @@ class WxUser extends Model
 {
     //
     protected $table = 'fb_user';
+    public const CREATED_AT = null;
+    public const UPDATED_AT = null;
 }
