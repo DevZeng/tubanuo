@@ -19,7 +19,6 @@ class UserController extends Controller
                 'msg'=>'error'
             ]);
         }
-//        if($user->teacher == 1){
             $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->orderBy('user_id','DESC')->first();
             if ($teach){
                 $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
@@ -29,34 +28,20 @@ class UserController extends Controller
                 $user->user_head1=$teach?$teach->user_head1:'';
                 $user->subjects=$teach?$teach->subjects:'';
                 $user->status=$teach?$teach->status:0;
-                $user->teacher = $teach?1:0;
-                $user->whether = $teach?$teach->whether:0;
+                $user->apply_teacher = $teach?1:0;
+                $user->apply_whether = $teach?$teach->whether:0;
             }
-        //dd($teach);
-
-
-//            return response()->json([
-//                'msg'=>'ok',
-//                'user'=>$user
-//            ]);
-//        }else{
             $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->orderBy('staff_id','DESC')->first();
-//            dd($worker);
             if ($worker){
                 $user->positions=$worker->positions;
                 $user->date1=$worker->date1;
                 $user->user_images1=$worker->user_images1;
                 $user->staff_status=$worker->staff_status;
-//                return response()->json([
-//                    'msg'=>"ok",
-//                    'user'=>$user,
-//                ]);
             }
         return response()->json([
             'msg'=>"ok",
             'user'=>$user
         ]);
-//        }
     }
 
     public function getClass(){
