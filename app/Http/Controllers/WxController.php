@@ -115,7 +115,7 @@ class WxController extends Controller
             $apply->subjects = $post->subjects;
             $apply->save();
         }
-        if (isset($staff_status)&&$staff_status==0&&strlen($post->user_images1)==0){
+        if (isset($staff_status)&&$staff_status==0&&strlen($post->user_images1)!=0){
             $staff = Staff::where('user_openid','=',$user->user_openid)->orderBy('staff_id','DESC')->delete();
             if (!$staff){
                 $staff = new Staff();
