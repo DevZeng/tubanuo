@@ -101,7 +101,11 @@ class WxController extends Controller
         $staff_status = $post->get('staff_status',null);
         $user->save();
         if ($teacher==1){
-            $apply = new TeacherApply();
+            $apply = TeacherApply::where('user_openid','=',$user->user_openid)->orderBy('user_id','DESC')->first();
+            if (!$apply){
+                $apply = new TeacherApply();
+            }
+            $apply->status = 1;
             $apply->user_openid = $user->user_openid;
             $apply->work_number = $post->work_number;
             $apply->user_card = $user->user_card;
@@ -112,14 +116,17 @@ class WxController extends Controller
             $apply->save();
         }
         if (isset($staff_status)&&$staff_status==0){
-            $staff = new Staff();
+            $staff = Staff::where('user_openid','=',$user->user_openid)->orderBy('staff_id','DESC')->delete();
+            if (!$staff){
+                $staff = new Staff();
+            }
+            $staff->staff_status = 0;
             $staff->user_openid = $user->user_openid;
             $staff->positions = $positions;
             $staff->date1 = $date1;
             $staff->user_images1 = $post->user_images1;
             $staff->save();
         }
-//        if ($data[''])
         return jsonResponse([
             'msg'=>'ok'
         ]);
