@@ -45,7 +45,7 @@ class Notice extends Command
         //
         $student=Student::where('stu_status','=',1)->orWhere('stu_status','=',2)->get();
         $template="sExfJnV0OMkzfcSNSNxpBbl6DrLO2VLXfIPCejmM1lM";
-        foreach ($student as $key=>$value){
+        foreach ($student as $value){
             $count=StudentStatus::where('student_id',$value->stu_id)->where('student_status',1)->count();
             if ($count == 0){
                 $data=[
