@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Commands\\CheckToken' => $baseDir . '/app/Console/Commands/CheckToken.php',
+    'App\\Console\\Commands\\Notice' => $baseDir . '/app/Console/Commands/Notice.php',
     'App\\Console\\Commands\\Push' => $baseDir . '/app/Console/Commands/Push.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
@@ -31,8 +32,11 @@ return array(
     'App\\Libraries\\WxNotify' => $baseDir . '/app/Libraries/WxNotify.php',
     'App\\Libraries\\WxPay' => $baseDir . '/app/Libraries/WxPay.php',
     'App\\Libraries\\Wxxcx' => $baseDir . '/app/Libraries/Wxxcx.php',
+    'App\\Models\\Staff' => $baseDir . '/app/Models/Staff.php',
+    'App\\Models\\TeacherApply' => $baseDir . '/app/Models/TeacherApply.php',
     'App\\Models\\User\\model\\User' => $baseDir . '/app/Models/User/model/User.php',
     'App\\Models\\VisitorHistory' => $baseDir . '/app/Models/VisitorHistory.php',
+    'App\\Models\\WxUser' => $baseDir . '/app/Models/WxUser.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',

@@ -463,6 +463,7 @@ class ComposerStaticInitd63329cab7aecb7a2eb6403fa16f7a86
 
     public static $classMap = array (
         'App\\Console\\Commands\\CheckToken' => __DIR__ . '/../..' . '/app/Console/Commands/CheckToken.php',
+        'App\\Console\\Commands\\Notice' => __DIR__ . '/../..' . '/app/Console/Commands/Notice.php',
         'App\\Console\\Commands\\Push' => __DIR__ . '/../..' . '/app/Console/Commands/Push.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -487,8 +488,11 @@ class ComposerStaticInitd63329cab7aecb7a2eb6403fa16f7a86
         'App\\Libraries\\WxNotify' => __DIR__ . '/../..' . '/app/Libraries/WxNotify.php',
         'App\\Libraries\\WxPay' => __DIR__ . '/../..' . '/app/Libraries/WxPay.php',
         'App\\Libraries\\Wxxcx' => __DIR__ . '/../..' . '/app/Libraries/Wxxcx.php',
+        'App\\Models\\Staff' => __DIR__ . '/../..' . '/app/Models/Staff.php',
+        'App\\Models\\TeacherApply' => __DIR__ . '/../..' . '/app/Models/TeacherApply.php',
         'App\\Models\\User\\model\\User' => __DIR__ . '/../..' . '/app/Models/User/model/User.php',
         'App\\Models\\VisitorHistory' => __DIR__ . '/../..' . '/app/Models/VisitorHistory.php',
+        'App\\Models\\WxUser' => __DIR__ . '/../..' . '/app/Models/WxUser.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
