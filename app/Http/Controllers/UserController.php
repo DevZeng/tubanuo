@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentStatus;
 use APP\Modules\User\UserHandle;
+use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -10,7 +12,13 @@ use Illuminate\Support\Facades\Input;
 class UserController extends Controller
 {
     //
-
+    public function test1(){
+        $student=Student::where('stu_status','=',1)->orWhere('stu_status','=',2)->get();
+        foreach ($student as $value){
+            $count=StudentStatus::where('student_id',$value->stu_id)->where('stu_status','=',1)->count();
+            dd($count);
+        }
+    }
     public function getUser(Request $post){
         $openid=$post->user_openid;
         $user=DB::table('fb_user')->where('user_openid',$openid)->first();
@@ -429,11 +437,6 @@ class UserController extends Controller
                 ]);
             }
         }
-
-
-
-
-
 
     }
 

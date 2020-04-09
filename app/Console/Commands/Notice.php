@@ -46,10 +46,10 @@ class Notice extends Command
         $student=Student::where('stu_status','=',1)->orWhere('stu_status','=',2)->get();
         $template="sExfJnV0OMkzfcSNSNxpBbl6DrLO2VLXfIPCejmM1lM";
         foreach ($student as $value){
-            $count=StudentStatus::where('student_id',$value->stu_id)->where('student_status',1)->count();
+            $count=StudentStatus::where('student_id',$value->stu_id)->where('stu_status',1)->count();
             if ($count == 0){
                 $data=[
-                    'touser'=>$student->user_openid,
+                    'touser'=>$value->user_openid,
                     'template_id'=>$template,
                     'miniprogram'=>[
                         'appid'=>""
@@ -59,16 +59,16 @@ class Notice extends Command
                             'value'=>"您好,审核申请已经有结果了"
                         ],
                         'keyword1'=>[
-                            'value'=>$student->stu_name
+                            'value'=>$value->stu_name
                         ],
                         'keyword2'=>[
-                            'value'=>$student->stu_status==1?'通过':'不通过'
+                            'value'=>$value->stu_status==1?'通过':'不通过'
                         ],
                         'keyword3'=>[
                             'value'=>date('Y年m月d H:i:s')
                         ],
                         'remark'=>[
-                            'value'=>$student->stu_status==1?"审核通过":"审核不通过,请重新提交"
+                            'value'=>$value->stu_status==1?"审核通过":"审核不通过,请重新提交"
                         ]
                     ],
                 ];
