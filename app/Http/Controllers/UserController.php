@@ -37,6 +37,9 @@ class UserController extends Controller
                 $user->date1=$worker->date1;
                 $user->user_images1=$worker->user_images1;
                 $user->staff_status=$worker->staff_status;
+                $user->apply_staff = $worker->staff_status==2?0:1;
+            }else{
+                $user->apply_staff = 0;
             }
         return response()->json([
             'msg'=>"ok",
