@@ -349,7 +349,7 @@ class UserController extends Controller
                 ];
                 DB::table('fb_parent')->insert($parent);
                 DB::table('fb_class_message')->where('stu_number',$stunum)->update([
-                    'stu_image'=>$student->stu_image
+                    'stu_image'=>$student->stu_images1
                 ]);
                 return response()->json([
                     'msg'=>'ok'
