@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CheckToken::class,
         Push::class,
-        Notice::class
+        //Notice::class
         //
     ];
 
@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('push')->everyMinute();
         $schedule->command('refreshToken')->everyMinute();
-        $schedule->command('notice')->everyMinute();
+        //$schedule->command('notice')->everyMinute();
     }
 
     /**
