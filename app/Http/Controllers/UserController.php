@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Wxxcx;
 use App\Models\StudentStatus;
 use APP\Modules\User\UserHandle;
 use App\Student;
@@ -12,12 +13,52 @@ use Illuminate\Support\Facades\Input;
 class UserController extends Controller
 {
     //
-    public function test1(){
-        $student=Student::where('stu_status','=',1)->orWhere('stu_status','=',2)->get();
-        foreach ($student as $value){
-            $count=StudentStatus::where('student_id',$value->stu_id)->where('stu_status','=',1)->count();
-            dd($count);
+    public function Notice($stu_id){
+        $student=Student::where('stu_id',$stu_id)->first();
+        $template="sExfJnV0OMkzfcSNSNxpBbl6DrLO2VLXfIPCejmM1lM";
+        $data=[
+            'touser'=>$student->user_openid,
+            'template_id'=>$template,
+            'miniprogram'=>[
+                'appid'=>""
+            ],
+            'data'=>[
+                'first'=>[
+                    'value'=>"您好,审核申请已经有结果了"
+                ],
+                'keyword1'=>[
+                    'value'=>$student->stu_name
+                ],
+                'keyword2'=>[
+                    'value'=>$student->stu_status==1?'通过':'不通过'
+                ],
+                'keyword3'=>[
+                    'value'=>date('Y年m月d H:i:s')
+                ],
+                'remark'=>[
+                    'value'=>$student->stu_status==1?"审核通过":"审核不通过,请重新提交"
+                ]
+            ],
+        ];
+        $access_token=getUserToken('access_token');
+        if ($access_token){
+            $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
+            $wx=new Wxxcx('wxa45e3bb7239c5059','65c369313719a3e02d9b905f13d9981e');
+            $redata = $wx->request($url,json_encode($data));
+            dump($redata);
+            if ($redata['errcode']==0){
+                $stu=new StudentStatus();
+                $stu->student_id=$student->stu_id;
+                $stu->stu_status=$student->stu_status;
+                $stu->save();
+            }else{
+                setRedisData('refresh',1);
+            }
+        }else{
+            setRedisData('refresh',1);
         }
+
+        return true;
     }
     public function getUser(Request $post){
         $openid=$post->user_openid;
@@ -27,28 +68,28 @@ class UserController extends Controller
                 'msg'=>'error'
             ]);
         }
-            $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->orderBy('user_id','DESC')->first();
-            if ($teach){
-                $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
-                $user->class_grade=$class?$class->class_grade:'';
-                $user->class_name=$class?$class->class_name:'';
-                $user->work_number=$teach?$teach->work_number:'';
-                $user->user_head1=$teach?$teach->user_head1:'';
-                $user->subjects=$teach?$teach->subjects:'';
-                $user->status=$teach?$teach->status:0;
-                $user->apply_teacher = $teach?1:0;
-                $user->apply_whether = $teach?$teach->whether:0;
-            }
-            $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->orderBy('staff_id','DESC')->first();
-            if ($worker){
-                $user->positions=$worker->positions;
-                $user->date1=$worker->date1;
-                $user->user_images1=$worker->user_images1;
-                $user->staff_status=$worker->staff_status;
-                $user->apply_staff = $worker->staff_status==2?0:1;
-            }else{
-                $user->apply_staff = 0;
-            }
+        $teach=DB::table('fb_teacher_apply')->where('user_openid',$openid)->orderBy('user_id','DESC')->first();
+        if ($teach){
+            $class=DB::table('fb_class')->where('class_id',$teach->class_id)->first();
+            $user->class_grade=$class?$class->class_grade:'';
+            $user->class_name=$class?$class->class_name:'';
+            $user->work_number=$teach?$teach->work_number:'';
+            $user->user_head1=$teach?$teach->user_head1:'';
+            $user->subjects=$teach?$teach->subjects:'';
+            $user->status=$teach?$teach->status:0;
+            $user->apply_teacher = $teach?1:0;
+            $user->apply_whether = $teach?$teach->whether:0;
+        }
+        $worker=DB::table('fb_sch_staff')->where('user_openid',$openid)->select('staff_id','positions','date1','staff_status',"user_images1")->orderBy('staff_id','DESC')->first();
+        if ($worker){
+            $user->positions=$worker->positions;
+            $user->date1=$worker->date1;
+            $user->user_images1=$worker->user_images1;
+            $user->staff_status=$worker->staff_status;
+            $user->apply_staff = $worker->staff_status==2?0:1;
+        }else{
+            $user->apply_staff = 0;
+        }
         return response()->json([
             'msg'=>"ok",
             'user'=>$user
@@ -337,12 +378,13 @@ class UserController extends Controller
     public function exStatus(Request $post){
         $stunum=$post->stu_number;
         $code=$post->code;
+        $student=DB::table('fb_student')->where('stu_number',$stunum)->first();
         if ($code == 1){
             $res=DB::table('fb_student')->where('stu_number',$stunum)->update([
                 'stu_status'=>$code
             ]);
             if ($res){
-                $student=DB::table('fb_student')->where('stu_number',$stunum)->first();
+
                 $user=DB::table('fb_user')->where('user_openid',$student->user_openid)->first();
                 $parent=[
                     'user_openid'=>$student->user_openid,
@@ -359,6 +401,7 @@ class UserController extends Controller
                 DB::table('fb_class_message')->where('stu_number',$stunum)->update([
                     'stu_image'=>$student->stu_images1
                 ]);
+                $this->Notice($student->stu_id);
                 return response()->json([
                     'msg'=>'ok'
                 ]);
@@ -367,6 +410,7 @@ class UserController extends Controller
             $res=DB::table('fb_student')->where('stu_number',$stunum)->update([
                 'stu_status'=>$code
             ]);
+            $this->Notice($student->stu_id);
             if ($res){
                 return response()->json([
                     'msg'=>"ok"

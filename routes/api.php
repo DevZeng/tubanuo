@@ -37,6 +37,6 @@ Route::get('user/exStatus','UserController@exStatus');//提交审核状态
 Route::post('user/saveStudent','UserController@saveStudent');//保存学生信息
 Route::get('user/config','UserController@getConfig');
 Route::post('insert_user','WxController@insert_user');
-//Route::get('user/test1','UserController@test1');
+//Route::get('user/notice','UserController@Notice');
 Route::get('grades','WxController@getGrade');
 Route::get('classes','WxController@getClassByGrade');
