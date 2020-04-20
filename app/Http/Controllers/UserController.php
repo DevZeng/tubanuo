@@ -486,11 +486,7 @@ class UserController extends Controller
     public function setNotify(Request $post)
     {
         $openId = $post->get('open_id');
-        $user = DB::table('fb_user')->where('user_openid','=',$openId)->first();
-        if ($user){
-            $user->notify = 1;
-            $user->save();
-        }
+        DB::table('fb_user')->where('user_openid','=',$openId)->update(['notify'=>1]);
         return response()->json([
             'msg'=>'ok'
         ]);
