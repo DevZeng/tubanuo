@@ -71,8 +71,8 @@ class Notify extends Command
                         dump($data);
                         $access_token=getUserToken('access_token');
                         if ($access_token){
-                            $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
-                            $wx=new Wxxcx('wxa45e3bb7239c5059','65c369313719a3e02d9b905f13d9981e');
+                            $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s',$access_token);
+                            $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                             $redata = $wx->request($url,json_encode($data));
                             dump($redata);
                             if ($redata['errcode']==0){
