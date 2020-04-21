@@ -68,6 +68,7 @@ class Notify extends Command
                                 ],
                             ],
                         ];
+                        dump($data);
                         $access_token=getUserToken('access_token');
                         if ($access_token){
                             $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
