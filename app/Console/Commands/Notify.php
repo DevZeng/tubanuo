@@ -64,7 +64,7 @@ class Notify extends Command
                                     'value'=>'学校正门'
                                 ],
                                 'thing8'=>[
-                                    'value'=>' '
+                                    'value'=>$records[$i]->temp==0?' ':'体温：'.$records[$i]->temp
                                 ],
                             ],
                         ];
