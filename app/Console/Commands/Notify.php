@@ -43,7 +43,7 @@ class Notify extends Command
         //
         $template="cMY51hC1INFQqnZBSMAOGivVU5ZyPrh6nFKbbFqhsLI";
         $records = DB::table('fb_school')->where('notify','=',1)->get();
-        if (count($records !=0)){
+        if (count($records )!=0){
             for ($i=0;$i<count($records);$i++){
                 $student = DB::table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                 if ($student){
