@@ -16,7 +16,7 @@ class WxController extends Controller
 {
     //
     private $app_id = 'wxa45e3bb7239c5059';
-    private $scerct = '65c369313719a3e02d9b905f13d9981e';
+    private $scerct = '2f0f6280dea9047347bd193747750bf8';
     public function getAccessToken(Request $post)
     {
         $access_token = getUserToken('access_token');
