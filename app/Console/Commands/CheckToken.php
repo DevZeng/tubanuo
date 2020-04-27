@@ -43,8 +43,8 @@ class CheckToken extends Command
         if ($access_token){
             $refresh = getUserToken('refresh');
             if ($refresh==1){
-                $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s','wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
-                $wx = new Wxxcx('wx5d3adede82686b38','2f0f6280dea9047347bd193747750bf8');
+                $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s','wxa45e3bb7239c5059','2f0f6280dea9047347bd193747750bf8');
+                $wx = new Wxxcx('wxa45e3bb7239c5059','2f0f6280dea9047347bd193747750bf8');
                 $data = $wx->request($url);
                 if (isset($data['access_token'])){
                     setRedisData('access_token',$data['access_token'],7000);
@@ -53,8 +53,8 @@ class CheckToken extends Command
                 }
             }
         }else{
-            $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s','wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
-            $wx = new Wxxcx('wx5d3adede82686b38','2f0f6280dea9047347bd193747750bf8');
+            $url = sprintf('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s','wxa45e3bb7239c5059','2f0f6280dea9047347bd193747750bf8');
+            $wx = new Wxxcx('wxa45e3bb7239c5059','2f0f6280dea9047347bd193747750bf8');
             $data = $wx->request($url);
             if (isset($data['access_token'])){
                 setRedisData('access_token',$data['access_token'],7000);
