@@ -512,6 +512,7 @@ class UserController extends Controller
                     'msg'=>'ok'
                 ]);
             }
+            DB::table('fb_user')->where('user_openid','=',$user_id)->update(['notify'=>1]);
             $schoolNotify = new SchoolNotify();
             $schoolNotify->school = $school;
             $schoolNotify->open_id = $open_id;
