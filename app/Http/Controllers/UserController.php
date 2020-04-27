@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\Wxxcx;
+use App\Models\SchoolNotify;
 use App\Models\StudentStatus;
 use APP\Modules\User\UserHandle;
 use App\Student;
@@ -490,6 +491,36 @@ class UserController extends Controller
         return response()->json([
             'msg'=>'ok'
         ]);
+    }
+    public function setSchoolNotify(Request $post)
+    {
+        $school = $post->get('school');
+        $user_id = $post->get('user_id');
+        $open_id = $post->get('open_id');
+        if ($open_id){
+            $user=DB::table('fb_user')->where('user_openid',$user_id)->first();
+            if (!$user){
+                return jsonResponse([
+                    'msg'=>'error'
+                ]);
+            }
+            $schoolNotify = SchoolNotify::where(
+                'open_id','=',$open_id
+            )->where('school','=',$school)->first();
+            if ($schoolNotify){
+                return jsonResponse([
+                    'msg'=>'ok'
+                ]);
+            }
+            $schoolNotify = new SchoolNotify();
+            $schoolNotify->school = $school;
+            $schoolNotify->open_id = $open_id;
+            $schoolNotify->user_id = $user_id;
+            $schoolNotify->save();
+            return jsonResponse([
+                'msg'=>'ok'
+            ]);
+        }
     }
 
 }

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 Route::get('notify','UserController@setNotify');
+Route::post('school/notify','UserController@setSchoolNotify');
 Route::get('access/token','WxController@getAccessToken');
 Route::get('login','WxController@login');
 Route::get('test','WxController@test');
