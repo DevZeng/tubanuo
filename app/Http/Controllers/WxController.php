@@ -140,6 +140,13 @@ class WxController extends Controller
         $data = $wx->request($url);
         dd($data);
     }
+    public function testDB()
+    {
+                $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->get();
+        dump($records);
+        $records2 = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
+        dump($records2);
+    }
     public function addVisitor(VisitorPost $post)
     {
         $visitor = new Visitor();

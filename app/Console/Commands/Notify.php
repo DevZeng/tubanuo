@@ -41,7 +41,7 @@ class Notify extends Command
      */
     public function handle()
     {
-        $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
+//        $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
 //        dump($records);
         $schoolName = $this->argument('param1');
 //        dump($schoolName);

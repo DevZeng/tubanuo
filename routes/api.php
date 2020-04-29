@@ -22,6 +22,7 @@ Route::post('school/notify','UserController@setSchoolNotify');
 Route::get('access/token','WxController@getAccessToken');
 Route::get('login','WxController@login');
 Route::get('test','WxController@test');
+Route::get('testdb','WxController@testDB');
 Route::post('visitor','WxController@addVisitor');
 Route::get('user/getUser',"UserController@getUser");
 Route::post('user/addUser',"UserController@addUser");
