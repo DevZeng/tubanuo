@@ -42,6 +42,7 @@ class Notify extends Command
     public function handle()
     {
         $schoolName = $this->argument('param1');
+        dump($schoolName);
         $config = [
             'longtouhuan'=>'龙头环小学',
             'huxun'=>'虎逊小学'
