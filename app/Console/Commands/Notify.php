@@ -42,9 +42,9 @@ class Notify extends Command
     public function handle()
     {
         $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
-        dump($records);
+//        dump($records);
         $schoolName = $this->argument('param1');
-        dump($schoolName);
+//        dump($schoolName);
         $config = [
             'longtouhuan'=>'龙头环小学',
             'huxun'=>'虎逊小学'
@@ -53,7 +53,7 @@ class Notify extends Command
         switch ($schoolName){
             case 'longtouhuan':
                 $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->get();
-                dd($records);
+//                dd($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
                         $student = DB::connection('mysql')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
@@ -116,7 +116,7 @@ class Notify extends Command
                 break;
             case 'huxun':
                 $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
-                dump($records);
+//                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
                         $student = DB::connection('mysql_huxun')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
