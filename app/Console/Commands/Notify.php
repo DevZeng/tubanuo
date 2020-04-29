@@ -51,6 +51,7 @@ class Notify extends Command
         switch ($schoolName){
             case 'longtouhuan':
                 $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->get();
+                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
                         $student = DB::connection('mysql')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
