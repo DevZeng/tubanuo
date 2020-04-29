@@ -113,6 +113,7 @@ class Notify extends Command
                 break;
             case 'huxun':
                 $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
+                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
                         $student = DB::connection('mysql_huxun')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
