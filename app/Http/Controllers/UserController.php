@@ -498,30 +498,60 @@ class UserController extends Controller
         $user_id = $post->get('user_id');
         $open_id = $post->get('open_id');
         if ($open_id){
-            $user=DB::table('fb_user')->where('user_openid',$user_id)->first();
-            if (!$user){
-                return jsonResponse([
-                    'msg'=>'error'
-                ]);
+            switch ($school){
+                case "longtouhuan":
+                    $user=DB::connection('mysql')->table('fb_user')->where('user_openid',$user_id)->first();
+                    if (!$user){
+                        return jsonResponse([
+                            'msg'=>'error'
+                        ]);
+                    }
+                    $schoolNotify = DB::connection('mysql')->table('school_notifies')
+                        ->where('open_id','=',$open_id)->where('school','=',$school)->first();
+                    if ($schoolNotify){
+                        return jsonResponse([
+                            'msg'=>'ok'
+                        ]);
+                    }
+                    DB::connection('mysql')->table('fb_user')->where('user_openid','=',$user_id)->update(['notify'=>1]);
+                    DB::connection('mysql')->table('school_notifies')->insert([
+                        'school'=>$school,
+                        'open_id'=>$open_id,
+                        'user_id'=>$user_id
+                    ]);
+                    return jsonResponse([
+                        'msg'=>'ok'
+                    ]);
+                    break;
+                case "huxun":
+                    $user=DB::connection('mysql_huxun')->table('fb_user')->where('user_openid',$user_id)->first();
+                    if (!$user){
+                        return jsonResponse([
+                            'msg'=>'error'
+                        ]);
+                    }
+                    $schoolNotify = DB::connection('mysql_huxun')->table('school_notifies')
+                        ->where('open_id','=',$open_id)->where('school','=',$school)->first();
+                    if ($schoolNotify){
+                        return jsonResponse([
+                            'msg'=>'ok'
+                        ]);
+                    }
+                    DB::connection('mysql_huxun')->table('fb_user')->where('user_openid','=',$user_id)->update(['notify'=>1]);
+                    DB::connection('mysql_huxun')->table('school_notifies')->insert([
+                        'school'=>$school,
+                        'open_id'=>$open_id,
+                        'user_id'=>$user_id
+                    ]);
+                    return jsonResponse([
+                        'msg'=>'ok'
+                    ]);
+                    break;
+                default:
+                    break;
             }
-            $schoolNotify = SchoolNotify::where(
-                'open_id','=',$open_id
-            )->where('school','=',$school)->first();
-            if ($schoolNotify){
-                return jsonResponse([
-                    'msg'=>'ok'
-                ]);
-            }
-            DB::table('fb_user')->where('user_openid','=',$user_id)->update(['notify'=>1]);
-            $schoolNotify = new SchoolNotify();
-            $schoolNotify->school = $school;
-            $schoolNotify->open_id = $open_id;
-            $schoolNotify->user_id = $user_id;
-            $schoolNotify->save();
-            return jsonResponse([
-                'msg'=>'ok'
-            ]);
         }
+
     }
 
 }
