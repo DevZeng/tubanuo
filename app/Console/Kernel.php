@@ -35,7 +35,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('push')->everyMinute();
         $schedule->command('refreshToken')->everyMinute();
-        $schedule->command('notify')->everyMinute();
+        $schedule->command('notify longtouhuan')->everyMinute();
+        $schedule->command('notify huxun')->everyMinute();
         //$schedule->command('notice')->everyMinute();
     }
 
