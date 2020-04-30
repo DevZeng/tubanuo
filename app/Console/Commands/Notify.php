@@ -130,7 +130,7 @@ class Notify extends Command
                                         'touser'=>$schoolNotify->open_id,
                                         'template_id'=>$template,
                                         'miniprogram'=>[
-                                            'appid'=>'wx5d3adede82686b38',
+                                            'appid'=>'wx9ceb6bc9883484de',
                                             'pagepath'=>"pages/campus-safety/index/index"
                                         ],
                                         'data'=>[
