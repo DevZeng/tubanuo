@@ -193,7 +193,7 @@ class Notify extends Command
                                         'touser'=>$schoolNotify->open_id,
                                         'template_id'=>$template,
                                         'miniprogram'=>[
-                                            'appid'=>'wx9ceb6bc9883484de',
+                                            'appid'=>'wx10d7cd97c4bed05c',
                                             'pagepath'=>"pages/campus-safety/index/index"
                                         ],
                                         'data'=>[
@@ -238,23 +238,23 @@ class Notify extends Command
                     }
                 }
                 break;
-            case 'shaxi':
-                $records = DB::connection('mysql_shaxi')->table('fb_school')->where('notify','=',1)->get();
+            case 'xijiao':
+                $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-                        $student = DB::connection('mysql_shaxi')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
+                        $student = DB::connection('mysql_xijiao')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
-                            $user = DB::connection('mysql_shaxi')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
+                            $user = DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
                             if ($user&&$user->notify==1){
-                                $schoolNotify = DB::connection('mysql_shaxi')->table('school_notifies')->
+                                $schoolNotify = DB::connection('mysql_xijiao')->table('school_notifies')->
                                 where('user_id','=',$user->user_openid)->first();
                                 if ($schoolNotify){
                                     $data=[
                                         'touser'=>$schoolNotify->open_id,
                                         'template_id'=>$template,
                                         'miniprogram'=>[
-                                            'appid'=>'wx9ceb6bc9883484de',
+                                            'appid'=>'wx3fe22b4ebf2ca578',
                                             'pagepath'=>"pages/campus-safety/index/index"
                                         ],
                                         'data'=>[
@@ -287,7 +287,7 @@ class Notify extends Command
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
                                     if ($redata['errcode']==0){
-                                        DB::connection('mysql_shaxi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                        DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
                                     }else{
                                         setRedisData('refresh',1);
                                     }

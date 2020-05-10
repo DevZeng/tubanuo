@@ -547,8 +547,57 @@ class UserController extends Controller
                         'msg'=>'ok'
                     ]);
                     break;
+                case "shiqi":
+                    $user=DB::connection('mysql_shiqi')->table('fb_user')->where('user_openid',$user_id)->first();
+                    if (!$user){
+                        return jsonResponse([
+                            'msg'=>'error'
+                        ]);
+                    }
+                    $schoolNotify = DB::connection('mysql_shiqi')->table('school_notifies')
+                        ->where('open_id','=',$open_id)->where('school','=',$school)->first();
+                    if ($schoolNotify){
+                        return jsonResponse([
+                            'msg'=>'ok'
+                        ]);
+                    }
+                    DB::connection('mysql_shiqi')->table('fb_user')->where('user_openid','=',$user_id)->update(['notify'=>1]);
+                    DB::connection('mysql_shiqi')->table('school_notifies')->insert([
+                        'school'=>$school,
+                        'open_id'=>$open_id,
+                        'user_id'=>$user_id
+                    ]);
+                    return jsonResponse([
+                        'msg'=>'ok'
+                    ]);
+                    break;
+                case "xijiao":
+                    $user=DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid',$user_id)->first();
+                    if (!$user){
+                        return jsonResponse([
+                            'msg'=>'error'
+                        ]);
+                    }
+                    $schoolNotify = DB::connection('mysql_xijiao')->table('school_notifies')
+                        ->where('open_id','=',$open_id)->where('school','=',$school)->first();
+                    if ($schoolNotify){
+                        return jsonResponse([
+                            'msg'=>'ok'
+                        ]);
+                    }
+                    DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid','=',$user_id)->update(['notify'=>1]);
+                    DB::connection('mysql_xijiao')->table('school_notifies')->insert([
+                        'school'=>$school,
+                        'open_id'=>$open_id,
+                        'user_id'=>$user_id
+                    ]);
+                    return jsonResponse([
+                        'msg'=>'ok'
+                    ]);
+                    break;
                 default:
                     break;
+
             }
         }
 
