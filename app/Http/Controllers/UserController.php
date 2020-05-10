@@ -425,7 +425,7 @@ class UserController extends Controller
 
     public function getConfig(Request $post){
         $version = $post->get('version');
-        if ($version==1){
+        if ($version==2){
             $config = [
                 'key'=>'open',
                 'value'=>0
