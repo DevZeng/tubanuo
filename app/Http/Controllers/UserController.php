@@ -425,14 +425,18 @@ class UserController extends Controller
 
     public function getConfig(Request $post){
         $version = $post->get('version');
-        if ($version==9999){
+        $school = $post->get('school');
+        if ($school=='xijiao'&&$version==2){
             $config = [
                 'key'=>'open',
                 'value'=>0
             ];
-        }else{
-            $config=DB::table('config')->where('id',1)->first();
+            return response()->json([
+                'msg'=>"ok",
+                'data'=>$config
+            ]);
         }
+        $config=DB::table('config')->where('id',1)->first();
 
         return response()->json([
             'msg'=>"ok",
