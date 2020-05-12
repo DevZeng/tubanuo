@@ -229,7 +229,7 @@ class Notify extends Command
 //                                    $redata = $wx->request($url,json_encode($data));
 //                                    dump($redata);
 //
-//                                        DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                        DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 //
 //
 //                                }else{
