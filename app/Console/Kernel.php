@@ -43,6 +43,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('notify huxun')->everyMinute();
         $schedule->command('notify xijiao')->everyMinute();
         $schedule->command('notify shiqi')->everyMinute();
+        $schedule->command('sendNotify')->everyMinute();
         //$schedule->command('notice')->everyMinute();
     }
 
