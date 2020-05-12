@@ -12,7 +12,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'fixData {param1}';
 
     /**
      * The console command description.
@@ -39,7 +39,19 @@ class FixData extends Command
     public function handle()
     {
         //
-        $user = DB::table('')->get();
+        $schoolName = $this->argument('param1');
+        $config = [
+            'longtouhuan'=>'龙头环小学',
+            'huxun'=>'虎逊小学',
+            'shiqi'=>'石岐中学',
+            'shaxi'=>'沙溪中学'
+        ];
+
+        switch ($schoolName){
+            case "shiqi":
+                DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->update(['notify'=>5]);
+                break;
+        }
 //        $db = DB::connection();
     }
 }

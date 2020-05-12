@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CheckToken;
+use App\Console\Commands\FixData;
 use App\Console\Commands\Notice;
 use App\Console\Commands\Notify;
 use App\Console\Commands\Push;
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
         CheckToken::class,
         Push::class,
         //Notice::class
-        Notify::class
+        Notify::class,
+        FixData::class
         //
     ];
 

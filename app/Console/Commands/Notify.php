@@ -108,6 +108,8 @@ class Notify extends Command
                                     setRedisData('refresh',1);
                                 }
                             }
+                        }else{
+                            DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
                         }
                     }
                 }
@@ -228,6 +230,8 @@ class Notify extends Command
                                     setRedisData('refresh',1);
                                 }
                             }
+                        }else{
+                            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
                         }
                     }
                 }
