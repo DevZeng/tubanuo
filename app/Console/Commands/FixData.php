@@ -51,7 +51,7 @@ class FixData extends Command
             case "shiqi":
                 $records = DB::connection('mysql_shiqi')->table('fb_school')
                     ->select(['id','stu_number','stu_name','school_status','imex_time','notify','temp'])
-                    ->where('notify','=',1)->groupBy('stu_number')->get();
+                    ->where('notify','=',1)->get()->groupBy('stu_number');
                 dd($records);
                 for ($i=0;$i<count($records);$i++){
 //                    DB::
