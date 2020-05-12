@@ -51,7 +51,7 @@ class FixData extends Command
             case "shiqi":
                 $data = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)
                     ->whereBetween('imex_time',['2020-05-10 15:06:03',date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
-                ->get();
+                ->get()->toArray();
                 dd($data);
 //                DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->update(['notify'=>5]);
                 break;
