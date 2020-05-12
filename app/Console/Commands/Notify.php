@@ -218,6 +218,7 @@ class Notify extends Command
                                 }
                                 $notifyList = new NotifyList();
                                 $notifyList->open_id = $schoolNotify->open_id;
+                                $notifyList->user_id = $schoolNotify->user_id;
                                 $notifyList->mtime = $records[$i]->imex_time;
                                 $notifyList->content = json_encode($data);
                                 $notifyList->save();
