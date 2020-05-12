@@ -101,11 +101,9 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+
                                         DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
@@ -163,11 +161,9 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+
                                         DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
@@ -224,11 +220,10 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+
                                         DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
@@ -286,11 +281,9 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+                                    
                                         DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
