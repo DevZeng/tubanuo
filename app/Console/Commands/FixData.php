@@ -51,7 +51,7 @@ class FixData extends Command
             case "shiqi":
                 $records = DB::connection('mysql_shiqi')->table('fb_school')
                     ->where('notify','=',1)->groupBy('stu_number')->get()->toArray();
-                dd($records);
+//                dd($records);
                 for ($i=0;$i<count($records);$i++){
 //                    DB::
                     DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('stu_number','=',$records[$i]->stu_number)
@@ -60,10 +60,10 @@ class FixData extends Command
                     DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
 
                 }
-                $data = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)
-                    ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
-                ->get()->toArray();
-                dd($data);
+//                $data = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)
+//                    ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
+//                ->get()->toArray();
+//                dd($data);
 //                DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->update(['notify'=>5]);
                 break;
         }
