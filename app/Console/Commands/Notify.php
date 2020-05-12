@@ -49,9 +49,10 @@ class Notify extends Command
             'shaxi'=>'沙溪中学'
         ];
         $template="xcpIiC4aBCpHImefa8FgwtFY6kMoDslN5BH2ZtA4rJk";
+        $day=date('Y-m-d',time());
         switch ($schoolName){
             case 'longtouhuan':
-                $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
 
@@ -114,7 +115,7 @@ class Notify extends Command
                 }
                 break;
             case 'huxun':
-                $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
@@ -176,11 +177,10 @@ class Notify extends Command
                 }
                 break;
             case 'shiqi':
-                $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-
                         $student = DB::connection('mysql_shiqi')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
                             $user = DB::connection('mysql_shiqi')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
@@ -238,7 +238,7 @@ class Notify extends Command
                 }
                 break;
             case 'xijiao':
-                $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
