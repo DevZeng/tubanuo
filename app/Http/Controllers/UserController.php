@@ -436,6 +436,16 @@ class UserController extends Controller
                 'data'=>$config
             ]);
         }
+        if ($school=='all'&&$version==88){
+            $config = [
+                'key'=>'open',
+                'value'=>0
+            ];
+            return response()->json([
+                'msg'=>"ok",
+                'data'=>$config
+            ]);
+        }
         $config=DB::table('config')->where('id',1)->first();
 
         return response()->json([
