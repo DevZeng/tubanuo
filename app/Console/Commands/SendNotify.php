@@ -54,12 +54,12 @@ class SendNotify extends Command
                 $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                 $redata = $wx->request($url,$list[$i]['content']);
                 if ($redata['errcode']==0){
-                    NotifyList::where()->update([
+                    NotifyList::where('id','=',$list[$i]['id'])->update([
                         'state'=>2,
                         'remark'=>$redata['errmsg']
                     ]);
                 }else{
-                    NotifyList::where()->update([
+                    NotifyList::where('id','=',$list[$i]['id'])->update([
                         'remark'=>$redata['errmsg']
                     ]);
                 }
