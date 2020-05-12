@@ -54,7 +54,7 @@ class FixData extends Command
 //                dd($records);
                 for ($i=0;$i<count($records);$i++){
 //                    DB::
-                    DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('stu_number','=',$records[$i]->stu_number)
+                    DB::connection('mysql_shiqi')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)
                         ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
                         ->update(['notify'=>10]);
                     DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
