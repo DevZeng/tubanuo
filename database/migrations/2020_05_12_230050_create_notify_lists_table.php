@@ -17,6 +17,8 @@ class CreateNotifyListsTable extends Migration
             $table->id();
             $table->text('content');
             $table->tinyInteger('state')->default(1);
+            $table->dateTime('mtime');
+            $table->string('open_id');
             $table->string('remark');
             $table->timestamps();
         });
