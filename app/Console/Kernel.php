@@ -7,6 +7,7 @@ use App\Console\Commands\FixData;
 use App\Console\Commands\Notice;
 use App\Console\Commands\Notify;
 use App\Console\Commands\Push;
+use App\Console\Commands\SendNotify;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         Push::class,
         //Notice::class
         Notify::class,
-        FixData::class
+        FixData::class,
+        SendNotify::class
         //
     ];
 
