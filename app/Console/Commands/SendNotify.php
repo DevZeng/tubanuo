@@ -44,7 +44,7 @@ class SendNotify extends Command
         $list = NotifyList::where('state','=',1)->groupBy('user_id')->get()->toArray();
         for ($i=0;$i<count($list);$i++){
 //                    DB::
-            NotifyList::where('open_id','=',$list[$i]['user_id'])
+            NotifyList::where('user_id','=',$list[$i]['user_id'])
                 ->where('id','!=',$list[$i]['id'])
                 ->whereBetween('mtime',[date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])-5*60),date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])+5*60)])
                 ->update(['state'=>2,'remark'=>'弃用十分钟内重复消息']);
