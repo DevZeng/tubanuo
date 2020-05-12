@@ -44,14 +44,14 @@ class SendNotify extends Command
         $list = NotifyList::where('state','=',1)->groupBy('open_id')->get()->toArray();
         for ($i=0;$i<count($list);$i++){
 //                    DB::
-            NotifyList::where('open_id','=',$list[$i]->open_id)
-                ->whereBetween('mtime',[date('Y-m-d H:i:s',strtotime($list[$i]->mtime)-5*60),date('Y-m-d H:i:s',strtotime($list[$i]->mtime)+5*60)])
+            NotifyList::where('open_id','=',$list[$i]['open_id'])
+                ->whereBetween('mtime',[date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])-5*60),date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])+5*60)])
                 ->update(['state'=>2,'remark'=>'弃用十分钟内重复消息']);
             $access_token=getUserToken('access_token');
             if ($access_token){
                 $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
                 $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
-                $redata = $wx->request($url,$list[$i]->content);
+                $redata = $wx->request($url,$list[$i]['content']);
                 dump($redata);
 //                DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
