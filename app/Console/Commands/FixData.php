@@ -49,7 +49,8 @@ class FixData extends Command
 
         switch ($schoolName){
             case "shiqi":
-                $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->groupBy('stu_number')->get();
+                dd($records);
                 for ($i=0;$i<count($records);$i++){
 //                    DB::
                     DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('stu_number','=',$records[$i]->stu_number)
