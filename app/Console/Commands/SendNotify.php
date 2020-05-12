@@ -39,7 +39,7 @@ class SendNotify extends Command
     public function handle()
     {
         //
-        $list = NotifyList::where('state','=',1)->groupBy('open_id')->get();
+        $list = NotifyList::where('state','=',1)->groupBy('open_id')->get()->toArray();
         dd($list);
     }
 }
