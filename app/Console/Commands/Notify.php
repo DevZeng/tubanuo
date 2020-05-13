@@ -215,13 +215,15 @@ class Notify extends Command
                                             ],
                                         ],
                                     ];
+                                    $notifyList = new NotifyList();
+                                    $notifyList->open_id = $schoolNotify->open_id;
+                                    $notifyList->user_id = $schoolNotify->user_id;
+                                    $notifyList->mtime = $records[$i]->imex_time;
+                                    $notifyList->content = json_encode($data);
+                                    $notifyList->save();
+                                    DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
                                 }
-                                $notifyList = new NotifyList();
-                                $notifyList->open_id = $schoolNotify->open_id;
-                                $notifyList->user_id = $schoolNotify->user_id;
-                                $notifyList->mtime = $records[$i]->imex_time;
-                                $notifyList->content = json_encode($data);
-                                $notifyList->save();
+
 //                                dump($data);
 //                                $access_token=getUserToken('access_token');
 //                                if ($access_token){
@@ -230,17 +232,17 @@ class Notify extends Command
 //                                    $redata = $wx->request($url,json_encode($data));
 //                                    dump($redata);
 //
-                                        DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
 //
 //
 //                                }else{
 //                                    setRedisData('refresh',1);
 //                                }
                             }else{
-                                DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
-                            }
+
+                            }DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
                         }else{
-                            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
+                            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>5]);
                         }
                     }
                 }
