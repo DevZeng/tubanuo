@@ -294,7 +294,7 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    
+
                                         DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
                                 }else{
