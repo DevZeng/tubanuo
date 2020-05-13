@@ -63,7 +63,7 @@ class SendNotify extends Command
                         'remark'=>$redata['errmsg']
                     ]);
                 }
-//                dump($redata);
+                dump($redata);
 
 //                DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
@@ -74,6 +74,6 @@ class SendNotify extends Command
 //            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
 
         }
-        dd($list);
+//        dd($list);
     }
 }
