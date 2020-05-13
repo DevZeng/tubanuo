@@ -41,7 +41,7 @@ class SendNotify extends Command
     public function handle()
     {
         //
-        $list = NotifyList::where('state','=',1)->groupBy('user_id')->get()->toArray();
+        $list = NotifyList::where('state','=',1)->orderBy('id','DESC')->groupBy('user_id')->get()->toArray();
         for ($i=0;$i<count($list);$i++){
 //                    DB::
             NotifyList::where('user_id','=',$list[$i]['user_id'])
