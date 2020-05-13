@@ -236,6 +236,8 @@ class Notify extends Command
 //                                }else{
 //                                    setRedisData('refresh',1);
 //                                }
+                            }else{
+                                DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
                             }
                         }else{
                             DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
