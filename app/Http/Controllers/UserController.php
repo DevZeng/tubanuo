@@ -426,16 +426,6 @@ class UserController extends Controller
     public function getConfig(Request $post){
         $version = $post->get('version');
         $school = $post->get('school');
-        if ($school=='shiqi'&&$version==2){
-            $config = [
-                'key'=>'open',
-                'value'=>0
-            ];
-            return response()->json([
-                'msg'=>"ok",
-                'data'=>$config
-            ]);
-        }
         if ($school=='all'&&$version==88){
             $config = [
                 'key'=>'open',
