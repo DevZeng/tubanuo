@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Libraries\Wxxcx;
 use App\Models\SchoolNotify;
 use App\Models\StudentStatus;
+use App\NotifyList;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -49,16 +50,13 @@ class Notify extends Command
             'shaxi'=>'沙溪中学'
         ];
         $template="xcpIiC4aBCpHImefa8FgwtFY6kMoDslN5BH2ZtA4rJk";
+        $day=date('Y-m-d',time());
         switch ($schoolName){
             case 'longtouhuan':
-                $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-                        $oldRecord = DB::connection('mysql')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)->where('notify','=',2)->first();
-                        if (strtotime($records[$i]->imex_time)-(strtotime($oldRecord->imex_time))>5*60){
-                            DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->delete();
-                            continue;
-                        }
+
                         $student = DB::connection('mysql')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
                             $user = DB::connection('mysql')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
@@ -104,29 +102,25 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+
                                         DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
                             }
+                        }else{
+                            DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
                         }
                     }
                 }
                 break;
             case 'huxun':
-                $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_huxun')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-                        $oldRecord = DB::connection('mysql_huxun')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)->where('notify','=',2)->first();
-                        if (strtotime($records[$i]->imex_time)-(strtotime($oldRecord->imex_time))>5*60){
-                            DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->delete();
-                            continue;
-                        }
+
                         $student = DB::connection('mysql_huxun')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
                             $user = DB::connection('mysql_huxun')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
@@ -170,11 +164,9 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+
                                         DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
@@ -184,15 +176,10 @@ class Notify extends Command
                 }
                 break;
             case 'shiqi':
-                $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-                        $oldRecord = DB::connection('mysql_shiqi')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)->where('notify','=',2)->first();
-                        if (strtotime($records[$i]->imex_time)-(strtotime($oldRecord->imex_time))>5*60){
-                            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->delete();
-                            continue;
-                        }
                         $student = DB::connection('mysql_shiqi')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
                             $user = DB::connection('mysql_shiqi')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
@@ -229,36 +216,39 @@ class Notify extends Command
                                         ],
                                     ];
                                 }
-                                dump($data);
-                                $access_token=getUserToken('access_token');
-                                if ($access_token){
-                                    $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
-                                    $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
-                                    $redata = $wx->request($url,json_encode($data));
-                                    dump($redata);
-                                    if ($redata['errcode']==0){
+                                $notifyList = new NotifyList();
+                                $notifyList->open_id = $schoolNotify->open_id;
+                                $notifyList->user_id = $schoolNotify->user_id;
+                                $notifyList->mtime = $records[$i]->imex_time;
+                                $notifyList->content = json_encode($data);
+                                $notifyList->save();
+//                                dump($data);
+//                                $access_token=getUserToken('access_token');
+//                                if ($access_token){
+//                                    $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
+//                                    $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
+//                                    $redata = $wx->request($url,json_encode($data));
+//                                    dump($redata);
+//
                                         DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
-                                }else{
-                                    setRedisData('refresh',1);
-                                }
+//
+//
+//                                }else{
+//                                    setRedisData('refresh',1);
+//                                }
                             }
+                        }else{
+                            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
                         }
                     }
                 }
                 break;
             case 'xijiao':
-                $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->get();
+                $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-                        $oldRecord = DB::connection('mysql_xijiao')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)->where('notify','=',2)->first();
-                        if (strtotime($records[$i]->imex_time)-(strtotime($oldRecord->imex_time))>5*60){
-                            DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->delete();
-                            continue;
-                        }
+
                         $student = DB::connection('mysql_xijiao')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
                             $user = DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
@@ -302,11 +292,9 @@ class Notify extends Command
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
-                                    if ($redata['errcode']==0){
+                                    
                                         DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                    }else{
-                                        setRedisData('refresh',1);
-                                    }
+
                                 }else{
                                     setRedisData('refresh',1);
                                 }
