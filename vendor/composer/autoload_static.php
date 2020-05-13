@@ -497,6 +497,7 @@ class ComposerStaticInitd63329cab7aecb7a2eb6403fa16f7a86
         'App\\Models\\User\\model\\User' => __DIR__ . '/../..' . '/app/Models/User/model/User.php',
         'App\\Models\\VisitorHistory' => __DIR__ . '/../..' . '/app/Models/VisitorHistory.php',
         'App\\Models\\WxUser' => __DIR__ . '/../..' . '/app/Models/WxUser.php',
+        'App\\NotifyList' => __DIR__ . '/../..' . '/app/NotifyList.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

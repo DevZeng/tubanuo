@@ -12,7 +12,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'fixData {param1}';
 
     /**
      * The console command description.
@@ -39,7 +39,34 @@ class FixData extends Command
     public function handle()
     {
         //
-        $user = DB::table('')->get();
+        $schoolName = $this->argument('param1');
+        $config = [
+            'longtouhuan'=>'龙头环小学',
+            'huxun'=>'虎逊小学',
+            'shiqi'=>'石岐中学',
+            'shaxi'=>'沙溪中学'
+        ];
+
+        switch ($schoolName){
+            case "shiqi":
+                $records = DB::connection('mysql_shiqi')->table('fb_school')
+                    ->where('notify','=',1)->groupBy('stu_number')->get()->toArray();
+//                dd($records);
+                for ($i=0;$i<count($records);$i++){
+//                    DB::
+                    DB::connection('mysql_shiqi')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)
+                        ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
+                        ->update(['notify'=>10]);
+                    DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
+
+                }
+//                $data = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)
+//                    ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
+//                ->get()->toArray();
+//                dd($data);
+//                DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->update(['notify'=>5]);
+                break;
+        }
 //        $db = DB::connection();
     }
 }

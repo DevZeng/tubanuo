@@ -41,6 +41,7 @@ return array(
     'App\\Models\\User\\model\\User' => $baseDir . '/app/Models/User/model/User.php',
     'App\\Models\\VisitorHistory' => $baseDir . '/app/Models/VisitorHistory.php',
     'App\\Models\\WxUser' => $baseDir . '/app/Models/WxUser.php',
+    'App\\NotifyList' => $baseDir . '/app/NotifyList.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
