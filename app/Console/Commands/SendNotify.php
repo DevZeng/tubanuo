@@ -60,6 +60,7 @@ class SendNotify extends Command
                     ]);
                 }else{
                     NotifyList::where('id','=',$list[$i]['id'])->update([
+                        'state'=>3,
                         'remark'=>$redata['errmsg']
                     ]);
                 }
