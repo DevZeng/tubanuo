@@ -252,7 +252,6 @@ class Notify extends Command
 //                dump($records);
                 if (count($records )!=0){
                     for ($i=0;$i<count($records);$i++){
-
                         $student = DB::connection('mysql_xijiao')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
                             $user = DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
@@ -288,21 +287,34 @@ class Notify extends Command
                                             ],
                                         ],
                                     ];
+                                    $notifyList = new NotifyList();
+                                    $notifyList->open_id = $schoolNotify->open_id;
+                                    $notifyList->user_id = $schoolNotify->user_id;
+                                    $notifyList->mtime = $records[$i]->imex_time;
+                                    $notifyList->content = json_encode($data);
+                                    $notifyList->save();
+                                    DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
                                 }
-                                dump($data);
-                                $access_token=getUserToken('access_token');
-                                if ($access_token){
-                                    $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
-                                    $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
-                                    $redata = $wx->request($url,json_encode($data));
-                                    dump($redata);
 
-                                        DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+//                                dump($data);
+//                                $access_token=getUserToken('access_token');
+//                                if ($access_token){
+//                                    $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
+//                                    $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
+//                                    $redata = $wx->request($url,json_encode($data));
+//                                    dump($redata);
+//
+                                DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
+//
+//
+//                                }else{
+//                                    setRedisData('refresh',1);
+//                                }
+                            }else{
 
-                                }else{
-                                    setRedisData('refresh',1);
-                                }
-                            }
+                            }DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
+                        }else{
+                            DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>5]);
                         }
                     }
                 }
