@@ -305,13 +305,7 @@ class Notify extends Command
 //                                    dump($redata);
 //
                                 DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
-//
-//
-//                                }else{
-//                                    setRedisData('refresh',1);
-//                                }
                             }else{
-
                             }DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
                         }else{
                             DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>5]);
