@@ -46,20 +46,22 @@ class FixData extends Command
             'shiqi'=>'石岐中学',
             'shaxi'=>'沙溪中学'
         ];
-
+        $day=date('Y-m-d',time());
         switch ($schoolName){
-            case "shiqi":
-                $records = DB::connection('mysql_shiqi')->table('fb_school')
-                    ->where('notify','=',1)->groupBy('stu_number')->get()->toArray();
-//                dd($records);
-                for ($i=0;$i<count($records);$i++){
-//                    DB::
-                    DB::connection('mysql_shiqi')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)
-                        ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
-                        ->update(['notify'=>10]);
-                    DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
+            case "xijiao":
+                $records = DB::connection('mysql_xijiao')->table('fb_school')
+                    ->where('notify','=',1)->update(['notify'=>2]);
+                $records = DB::connection('mysql_xijiao')->table('fb_school')->where('imex_time','like',$day."%")->update(['notify'=>1]);
 
-                }
+//                dd($records);
+//                for ($i=0;$i<count($records);$i++){
+////                    DB::
+//                    DB::connection('mysql_shiqi')->table('fb_school')->where('stu_number','=',$records[$i]->stu_number)
+//                        ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
+//                        ->update(['notify'=>10]);
+//                    DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
+//
+//                }
 //                $data = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)
 //                    ->whereBetween('imex_time',[date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')-5*60),date('Y-m-d H:i:s',strtotime('2020-05-10 15:06:03')+5*60)])
 //                ->get()->toArray();
