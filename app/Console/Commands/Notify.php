@@ -47,7 +47,7 @@ class Notify extends Command
             'longtouhuan'=>'龙头环小学',
             'huxun'=>'虎逊小学',
             'shiqi'=>'石岐中学',
-            'shaxi'=>'沙溪中学'
+            'xijiao'=>'溪角中学'
         ];
         $template="xcpIiC4aBCpHImefa8FgwtFY6kMoDslN5BH2ZtA4rJk";
         $day=date('Y-m-d',time());
