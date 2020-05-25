@@ -43,3 +43,4 @@ Route::post('insert_user','WxController@insert_user');
 //Route::get('user/notice','UserController@Notice');
 Route::get('grades','WxController@getGrade');
 Route::get('classes','WxController@getClassByGrade');
+Route::get('temp','UserController@getImage');
