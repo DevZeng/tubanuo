@@ -626,24 +626,39 @@ class UserController extends Controller
                 array_push($tempArr,$temp2);
             }
         }
+        $result = [];
         for ($i=0;$i<32;$i++){
+            $result2 = [];
             for ($j=0;$j<32;$j++){
                 if ($tempArr[$i*32+$j]<250){
-                    printf(0);
+                    $result2[$j] = 0;
                 }elseif ($tempArr[$i*32+$j]>=250&&$tempArr[$i*32+$j]<=300){
-                    printf(0);
+//                    printf(0);
+                    $result2[$j] = 0;
                 }elseif ($tempArr[$i*32+$j]>=300&&$tempArr[$i*32+$j]<=330){
-                    printf(1);
+//                    printf(1);
+                    $result2[$j] = 1;
                 }elseif($tempArr[$i*32+$j]>=330&&$tempArr[$i*32+$j]<=370){
-                    printf(2);
+//                    printf(2);
+                    $result2[$j] = 2;
                 }elseif($tempArr[$i*32+$j]>=370&&$tempArr[$i*32+$j]<=420){
-                    printf(3);
+//                    printf(3);
+                    $result2[$j] = 3;
                 }else{
-                    printf(5);
+
+                    $result2[$j] = 5;
                 }
             }
+            array_push($result,$result2);
             printf("\n");
         }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>[
+                'origin'=>$tempArr,
+                'fix'=>$result
+            ]
+        ]);
     }
 
 }

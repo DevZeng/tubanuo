@@ -54,6 +54,7 @@ class Notice extends Command
                 array_push($tempArr,$temp2);
             }
         }
+
         for ($i=0;$i<32;$i++){
             for ($j=0;$j<32;$j++){
                 if ($tempArr[$i*32+$j]<250){
