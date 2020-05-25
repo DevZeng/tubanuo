@@ -614,5 +614,36 @@ class UserController extends Controller
         }
 
     }
+    public function getImage(Request $post)
+    {
+        $temp = $post->temp;
+//        dd(strlen($temp));
+        $tempArr = [];
+        for ($i=0;$i<4096;$i++){
+            if ($i%4==0){
+                $temp1 = substr($temp,$i,4);
+                $temp2 = hexdec(substr($temp1,0,2))*256+hexdec(substr($temp1,2,2))-2731;
+                array_push($tempArr,$temp2);
+            }
+        }
+        for ($i=0;$i<32;$i++){
+            for ($j=0;$j<32;$j++){
+                if ($tempArr[$i*32+$j]<250){
+                    printf(0);
+                }elseif ($tempArr[$i*32+$j]>=250&&$tempArr[$i*32+$j]<=300){
+                    printf(0);
+                }elseif ($tempArr[$i*32+$j]>=300&&$tempArr[$i*32+$j]<=330){
+                    printf(1);
+                }elseif($tempArr[$i*32+$j]>=330&&$tempArr[$i*32+$j]<=370){
+                    printf(2);
+                }elseif($tempArr[$i*32+$j]>=370&&$tempArr[$i*32+$j]<=420){
+                    printf(3);
+                }else{
+                    printf(5);
+                }
+            }
+            printf("\n");
+        }
+    }
 
 }
