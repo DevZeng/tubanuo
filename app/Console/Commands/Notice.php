@@ -57,15 +57,15 @@ class Notice extends Command
         for ($i=0;$i<32;$i++){
             for ($j=0;$j<32;$j++){
                 if ($tempArr[$i*32+$j]<250){
-                    printf(0);
+                    print 0;
                 }elseif ($tempArr[$i*32+$j]>=250&&$tempArr[$i*32+$j]<=300){
-                    printf(0);
+                    print 0;
                 }elseif ($tempArr[$i*32+$j]>=300&&$tempArr[$i*32+$j]<=330){
-                    printf(1);
+                    print 1;
                 }elseif($tempArr[$i*32+$j]>=330&&$tempArr[$i*32+$j]<=370){
-                    printf(2);
+                    print 2;
                 }elseif($tempArr[$i*32+$j]>=370&&$tempArr[$i*32+$j]<=420){
-                    printf(3);
+                    print 3;
                 }else{
                     printf(5);
                 }
