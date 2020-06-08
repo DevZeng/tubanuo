@@ -223,6 +223,7 @@ class Notify extends Command
                                             $notifyList->user_id = $schoolNotify->user_id;
                                             $notifyList->mtime = $records[$i]->imex_time;
                                             $notifyList->content = json_encode($data);
+                                            $notifyList->stu_num = $records[$i]->stu_number;
                                             $notifyList->save();
                                         }
 
@@ -301,6 +302,7 @@ class Notify extends Command
                                             $notifyList->user_id = $schoolNotify->user_id;
                                             $notifyList->mtime = $records[$i]->imex_time;
                                             $notifyList->content = json_encode($data);
+                                            $notifyList->stu_num = $records[$i]->stu_number;
                                             $notifyList->save();
                                         }
 
