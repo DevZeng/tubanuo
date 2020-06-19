@@ -50,6 +50,7 @@ class Notify extends Command
             'xijiao'=>'溪角中学'
         ];
         $template="xcpIiC4aBCpHImefa8FgwtFY6kMoDslN5BH2ZtA4rJk";
+        $templateout="tg_L2eK0_vY0y9IwL5qaEzpF0Q-2WB5JKgoMAwkivO4";
         $day=date('Y-m-d',time());
         switch ($schoolName){
             case 'longtouhuan':
@@ -62,7 +63,7 @@ class Notify extends Command
                             $user = DB::connection('mysql')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
                             if ($user&&$user->notify==1){
                                 $schoolNotify = DB::connection('mysql')->table('school_notifies')->
-                                    where('user_id','=',$user->user_openid)->first();
+                                where('user_id','=',$user->user_openid)->first();
 //                                $schoolNotify = SchoolNotify::where('user_id','=',$user->user_openid)->first();
                                 if ($schoolNotify){
                                     $data=[
@@ -103,7 +104,7 @@ class Notify extends Command
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
 
-                                        DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                    DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
                                 }else{
                                     setRedisData('refresh',1);
@@ -127,7 +128,7 @@ class Notify extends Command
                             if ($user&&$user->notify==1){
                                 $schoolNotify = DB::connection('mysql_huxun')->table('school_notifies')->
                                 where('user_id','=',$user->user_openid)->first();
-                               if ($schoolNotify){
+                                if ($schoolNotify){
                                     $data=[
                                         'touser'=>$schoolNotify->open_id,
                                         'template_id'=>$template,
@@ -165,7 +166,7 @@ class Notify extends Command
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
 
-                                        DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                    DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
                                 }else{
                                     setRedisData('refresh',1);
@@ -192,7 +193,7 @@ class Notify extends Command
                                         if ($schoolNotify){
                                             $data=[
                                                 'touser'=>$schoolNotify->open_id,
-                                                'template_id'=>$template,
+                                                'template_id'=>$records[$i]->school_status==0?$templateout:$template,
                                                 'miniprogram'=>[
                                                     'appid'=>'wx10d7cd97c4bed05c',
                                                     'pagepath'=>"pages/campus-safety/index/index"
@@ -271,7 +272,7 @@ class Notify extends Command
                                         if ($schoolNotify){
                                             $data=[
                                                 'touser'=>$schoolNotify->open_id,
-                                                'template_id'=>$template,
+                                                'template_id'=>$records[$i]->school_status==0?$templateout:$template,
                                                 'miniprogram'=>[
                                                     'appid'=>'wx3fe22b4ebf2ca578',
                                                     'pagepath'=>"pages/campus-safety/index/index"
