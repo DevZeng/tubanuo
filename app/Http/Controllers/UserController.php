@@ -426,7 +426,7 @@ class UserController extends Controller
     public function getConfig(Request $post){
         $version = $post->get('version');
         $school = $post->get('school');
-        /*if ($school=='all'&&$version==2002){
+        if ($school=='all'&&$version==2003){
            $config = [
                'key'=>'open',
                 'value'=>0
@@ -435,7 +435,7 @@ class UserController extends Controller
                 'msg'=>"ok",
                 'data'=>$config
             ]);
-        }*/
+        }
         $config=DB::table('config')->where('id',1)->first();
 
         return response()->json([
