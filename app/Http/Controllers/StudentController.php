@@ -15,7 +15,18 @@ class StudentController extends Controller
 {
     public function getUserStudent(Request $post){
         $openid=$post->user_openid;
-        $data=DB::table('fb_parent')->where('user_openid',$openid)->get();
+        $school = $post->school;
+        switch ($school){
+            case 'shiqi':
+                $data=DB::connection('mysql_shiqi')->table('fb_parent')->where('user_openid',$openid)->get();
+                break;
+            case 'xijiao':
+                $data=DB::connection('mysql_xijiao')->table('fb_parent')->where('user_openid',$openid)->get();
+                break;
+            default:
+                $data = [];
+                break;
+        }
         return jsonResponse([
             'msg'=>'ok',
             'data' => $data
@@ -25,7 +36,18 @@ class StudentController extends Controller
     public function getExamName(Request $post){
         $number=$post->number;
         $select = ['id','sch_num','k_name','k_date'];
-        $data=DB::table('fb_score')->where('sch_num',$number)->select($select)->orderBy('k_date', 'desc')->get();
+        $school = $post->school;
+        switch ($school){
+            case 'shiqi':
+                $data=DB::connection('mysql_shiqi')->table('fb_score')->where('sch_num',$number)->select($select)->orderBy('k_date', 'desc')->get();
+                break;
+            case 'xijiao':
+                $data=DB::connection('mysql_xijiao')->table('fb_score')->where('sch_num',$number)->select($select)->orderBy('k_date', 'desc')->get();
+                break;
+            default:
+                $data = [];
+                break;
+        }
         return jsonResponse([
             'msg'=>'ok',
             'data' => $data
@@ -33,7 +55,18 @@ class StudentController extends Controller
     }
 
     public function getExamDetail(Request $post){
-        $data = DB::table('fb_score')->where('id',$post->id)->where('sch_num',$post->number)->orderBy('k_date', 'desc')->first();
+        $school = $post->school;
+        switch ($school){
+            case 'shiqi':
+                $data=DB::connection('mysql_shiqi')->table('fb_score')->where('id',$post->id)->where('sch_num',$post->number)->orderBy('k_date', 'desc')->first();
+                break;
+            case 'xijiao':
+                $data=DB::connection('mysql_xijiao')->table('fb_score')->where('id',$post->id)->where('sch_num',$post->number)->orderBy('k_date', 'desc')->first();
+                break;
+            default:
+                $data = [];
+                break;
+        }
         if(strlen($data->chineses) >= 1){
             $data->chineses = [
                 'score' => $data->chineses,
