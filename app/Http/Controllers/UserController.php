@@ -436,7 +436,7 @@ class UserController extends Controller
 //                'data'=>$config
 //            ]);
 //        }
-        if ($school=='kindergarten'&&$version=='1.0.1'){
+        if ($school=='kindergarten'&&$version=='1.0.0'){
             $config = [
                 'key'=>'open',
                 'value'=>0
