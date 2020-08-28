@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
+use App\Models\FbStudent;
+use App\Models\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -167,5 +169,66 @@ class StudentController extends Controller
             'msg'=>'ok',
             'data' => $data
         ]);
+    }
+
+    public function upgradeGrade(){
+        $grade = StudentClass::get();
+        $delData = [];
+        $data = [];
+        foreach ($grade as $datum){
+            if($datum->grade == 6 || $datum->grade == 9 || $datum->grade == 15){
+                $delData [] = $datum->class_id;
+            }else{
+                $datum['later_grade'] = $datum->grade + 1;
+                $datum['later_name'] = $this->gradeOption($datum['later_grade']);
+                $data[] = $datum;
+            }
+        }
+        $ss = [];
+        foreach ($data as &$datum){
+            $datum->class_grade = $datum->later_name;
+            $datum->grade = $datum->later_grade;
+            unset($datum->later_name,$datum->later_grade);
+            $ss[] = [
+                'class_id' => $datum->class_id,
+                'class_grade' => $datum->class_grade,
+                'grade' => $datum->grade
+            ];
+        }
+//        return jsonResponse(['msg'=>'ok','data' => $ww]);
+        DB::beginTransaction();
+        try{
+            FbStudent::query()->whereIn('class_id',$delData)->delete();
+            foreach ($data as $val){
+                StudentClass::where('class_id',$val['class_id'])->update($val->toArray());
+            }
+            StudentClass::query()->whereIn('class_id',$delData)->delete();
+            DB::commit();
+            return jsonResponse(['msg'=>'ok']);
+        }catch (\Exception $exception){
+            DB::rollBack();
+            throw new \Exception($exception->getMessage(),422);
+        }
+    }
+
+    function gradeOption($key){
+        $grade = [
+            '1' => '一年级',
+            '2' => '二年级',
+            '3' => '三年级',
+            '4' => '四年级',
+            '5' => '五年级',
+            '6' => '六年级',
+            '7' => '初一',
+            '8' => '初二',
+            '9' => '初三',
+            '10' => '高一',
+            '11' => '高二',
+            '12' => '高三',
+            '13' => '小班',
+            '14' => '中班',
+            '15' => '大班',
+        ];
+        return $grade[$key];
     }
 }

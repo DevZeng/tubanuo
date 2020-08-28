@@ -16,3 +16,4 @@ Route::get('temp','UserController@getImage');
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('upgrade/grade','StudentController@upgradeGrade');
