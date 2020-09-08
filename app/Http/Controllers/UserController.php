@@ -446,7 +446,7 @@ class UserController extends Controller
                 'data'=>$config
             ]);
         }
-        if ($school=='all'&&$version=='2010'){
+        if ($school=='all'&&$version=='2009'){
             $config = [
                 'key'=>'open',
                 'value'=>0
