@@ -45,7 +45,7 @@ class SendNotify extends Command
         for ($i=0;$i<count($list);$i++){
 //                    DB::
             NotifyList::where('user_id','=',$list[$i]['user_id'])
-                ->where('id','!=',$list[$i]['id'])
+                ->where('id','!=',$list[$i]['id'])->where('stu_num','=',$list[$i]["stu_num"])
                 ->whereBetween('mtime',[date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])-5*60),date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])+5*60)])
                 ->update(['state'=>2,'remark'=>'弃用十分钟内重复消息']);
             $access_token=getUserToken('access_token');

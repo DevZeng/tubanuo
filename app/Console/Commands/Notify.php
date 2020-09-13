@@ -50,6 +50,7 @@ class Notify extends Command
             'xijiao'=>'溪角中学'
         ];
         $template="xcpIiC4aBCpHImefa8FgwtFY6kMoDslN5BH2ZtA4rJk";
+        $templateout="tg_L2eK0_vY0y9IwL5qaEzpF0Q-2WB5JKgoMAwkivO4";
         $day=date('Y-m-d',time());
         switch ($schoolName){
             case 'longtouhuan':
@@ -62,7 +63,7 @@ class Notify extends Command
                             $user = DB::connection('mysql')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
                             if ($user&&$user->notify==1){
                                 $schoolNotify = DB::connection('mysql')->table('school_notifies')->
-                                    where('user_id','=',$user->user_openid)->first();
+                                where('user_id','=',$user->user_openid)->first();
 //                                $schoolNotify = SchoolNotify::where('user_id','=',$user->user_openid)->first();
                                 if ($schoolNotify){
                                     $data=[
@@ -96,14 +97,14 @@ class Notify extends Command
                                 }
 
                                 dump($data);
-                                $access_token=getUserToken('access_token');
+                                $access_token=getUserToken('wxa45e3bb7239c5059');
                                 if ($access_token){
                                     $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
 
-                                        DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                    DB::connection('mysql')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
                                 }else{
                                     setRedisData('refresh',1);
@@ -127,7 +128,7 @@ class Notify extends Command
                             if ($user&&$user->notify==1){
                                 $schoolNotify = DB::connection('mysql_huxun')->table('school_notifies')->
                                 where('user_id','=',$user->user_openid)->first();
-                               if ($schoolNotify){
+                                if ($schoolNotify){
                                     $data=[
                                         'touser'=>$schoolNotify->open_id,
                                         'template_id'=>$template,
@@ -158,14 +159,14 @@ class Notify extends Command
                                     ];
                                 }
                                 dump($data);
-                                $access_token=getUserToken('access_token');
+                                $access_token=getUserToken('wxa45e3bb7239c5059');
                                 if ($access_token){
                                     $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
                                     $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
                                     $redata = $wx->request($url,json_encode($data));
                                     dump($redata);
 
-                                        DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                                    DB::connection('mysql_huxun')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
 
                                 }else{
                                     setRedisData('refresh',1);
@@ -182,47 +183,50 @@ class Notify extends Command
                     for ($i=0;$i<count($records);$i++){
                         $student = DB::connection('mysql_shiqi')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
-                            $user = DB::connection('mysql_shiqi')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
-                            if ($user&&$user->notify==1){
-                                $schoolNotify = DB::connection('mysql_shiqi')->table('school_notifies')->
-                                where('user_id','=',$user->user_openid)->first();
-                                if ($schoolNotify){
-                                    $data=[
-                                        'touser'=>$schoolNotify->open_id,
-                                        'template_id'=>$template,
-                                        'miniprogram'=>[
-                                            'appid'=>'wx10d7cd97c4bed05c',
-                                            'pagepath'=>"pages/campus-safety/index/index"
-                                        ],
-                                        'data'=>[
-                                            'first'=>[
-                                                'value'=>$config[$schoolNotify->school]
-                                            ],
-                                            'keyword1'=>[
-                                                'value'=>$records[$i]->stu_number
-                                            ],
-                                            'keyword2'=>[
-                                                'value'=>$records[$i]->stu_name
-                                            ],
-                                            'keyword3'=>[
-                                                'value'=>$records[$i]->school_status==0?"离校":"进校"
-                                            ],
-                                            'keyword4'=>[
-                                                'value'=>$records[$i]->imex_time
-                                            ],
-                                            'remark'=>[
-                                                'value'=>$records[$i]->temp==0?' ':'体温：'.$records[$i]->temp
-                                            ],
-                                        ],
-                                    ];
-                                    $notifyList = new NotifyList();
-                                    $notifyList->open_id = $schoolNotify->open_id;
-                                    $notifyList->user_id = $schoolNotify->user_id;
-                                    $notifyList->mtime = $records[$i]->imex_time;
-                                    $notifyList->content = json_encode($data);
-                                    $notifyList->save();
-                                    DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                }
+                            $parents = DB::connection('mysql_shiqi')->table('fb_parent')->where('stu_number','=',$records[$i]->stu_number)->where('parent_status','=',1)->get();
+                            if (count($parents)!=0){
+                                foreach ($parents as $parent){
+                                    $user = DB::connection('mysql_shiqi')->table('fb_user')->where('user_openid','=',$parent->user_openid)->first();
+                                    if ($user&&$user->notify==1){
+                                        $schoolNotify = DB::connection('mysql_shiqi')->table('school_notifies')->
+                                        where('user_id','=',$user->user_openid)->first();
+                                        if ($schoolNotify){
+                                            $data=[
+                                                'touser'=>$schoolNotify->open_id,
+                                                'template_id'=>$records[$i]->school_status==0?$templateout:$template,
+                                                'miniprogram'=>[
+                                                    'appid'=>'wx10d7cd97c4bed05c',
+                                                    'pagepath'=>"pages/campus-safety/index/index"
+                                                ],
+                                                'data'=>[
+                                                    'first'=>[
+                                                        'value'=>$config[$schoolNotify->school]
+                                                    ],
+                                                    'keyword1'=>[
+                                                        'value'=>$records[$i]->stu_number
+                                                    ],
+                                                    'keyword2'=>[
+                                                        'value'=>$records[$i]->stu_name
+                                                    ],
+                                                    'keyword3'=>[
+                                                        'value'=>$records[$i]->school_status==0?"离校":"进校"
+                                                    ],
+                                                    'keyword4'=>[
+                                                        'value'=>$records[$i]->imex_time
+                                                    ],
+                                                    'remark'=>[
+                                                        'value'=>$records[$i]->temp==0?' ':'体温：'.$records[$i]->temp
+                                                    ],
+                                                ],
+                                            ];
+                                            $notifyList = new NotifyList();
+                                            $notifyList->open_id = $schoolNotify->open_id;
+                                            $notifyList->user_id = $schoolNotify->user_id;
+                                            $notifyList->mtime = $records[$i]->imex_time;
+                                            $notifyList->content = json_encode($data);
+                                            $notifyList->stu_num = $records[$i]->stu_number;
+                                            $notifyList->save();
+                                        }
 
 //                                dump($data);
 //                                $access_token=getUserToken('access_token');
@@ -232,15 +236,19 @@ class Notify extends Command
 //                                    $redata = $wx->request($url,json_encode($data));
 //                                    dump($redata);
 //
-                                DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
+//                                        DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
 //
 //
 //                                }else{
 //                                    setRedisData('refresh',1);
 //                                }
-                            }else{
+                                    }else{
 
-                            }DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
+                                    }
+                                }
+                                DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                            }
+                            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
                         }else{
                             DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>5]);
                         }
@@ -254,47 +262,50 @@ class Notify extends Command
                     for ($i=0;$i<count($records);$i++){
                         $student = DB::connection('mysql_xijiao')->table('fb_student')->where('stu_number','=',$records[$i]->stu_number)->first();
                         if ($student){
-                            $user = DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid','=',$student->user_openid)->first();
-                            if ($user&&$user->notify==1){
-                                $schoolNotify = DB::connection('mysql_xijiao')->table('school_notifies')->
-                                where('user_id','=',$user->user_openid)->first();
-                                if ($schoolNotify){
-                                    $data=[
-                                        'touser'=>$schoolNotify->open_id,
-                                        'template_id'=>$template,
-                                        'miniprogram'=>[
-                                            'appid'=>'wx3fe22b4ebf2ca578',
-                                            'pagepath'=>"pages/campus-safety/index/index"
-                                        ],
-                                        'data'=>[
-                                            'first'=>[
-                                                'value'=>$config[$schoolNotify->school]
-                                            ],
-                                            'keyword1'=>[
-                                                'value'=>$records[$i]->stu_number
-                                            ],
-                                            'keyword2'=>[
-                                                'value'=>$records[$i]->stu_name
-                                            ],
-                                            'keyword3'=>[
-                                                'value'=>$records[$i]->school_status==0?"离校":"进校"
-                                            ],
-                                            'keyword4'=>[
-                                                'value'=>$records[$i]->imex_time
-                                            ],
-                                            'remark'=>[
-                                                'value'=>$records[$i]->temp==0?' ':'体温：'.$records[$i]->temp
-                                            ],
-                                        ],
-                                    ];
-                                    $notifyList = new NotifyList();
-                                    $notifyList->open_id = $schoolNotify->open_id;
-                                    $notifyList->user_id = $schoolNotify->user_id;
-                                    $notifyList->mtime = $records[$i]->imex_time;
-                                    $notifyList->content = json_encode($data);
-                                    $notifyList->save();
-                                    DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
-                                }
+                            $parents = DB::connection('mysql_xijiao')->table('fb_parent')->where('stu_number','=',$records[$i]->stu_number)->where('parent_status','=',1)->get();
+                            if (count($parents)!=0){
+                                foreach ($parents as $parent){
+                                    $user = DB::connection('mysql_xijiao')->table('fb_user')->where('user_openid','=',$parent->user_openid)->first();
+                                    if ($user&&$user->notify==1){
+                                        $schoolNotify = DB::connection('mysql_xijiao')->table('school_notifies')->
+                                        where('user_id','=',$user->user_openid)->first();
+                                        if ($schoolNotify){
+                                            $data=[
+                                                'touser'=>$schoolNotify->open_id,
+                                                'template_id'=>$records[$i]->school_status==0?$templateout:$template,
+                                                'miniprogram'=>[
+                                                    'appid'=>'wx3fe22b4ebf2ca578',
+                                                    'pagepath'=>"pages/campus-safety/index/index"
+                                                ],
+                                                'data'=>[
+                                                    'first'=>[
+                                                        'value'=>$config[$schoolNotify->school]
+                                                    ],
+                                                    'keyword1'=>[
+                                                        'value'=>$records[$i]->stu_number
+                                                    ],
+                                                    'keyword2'=>[
+                                                        'value'=>$records[$i]->stu_name
+                                                    ],
+                                                    'keyword3'=>[
+                                                        'value'=>$records[$i]->school_status==0?"离校":"进校"
+                                                    ],
+                                                    'keyword4'=>[
+                                                        'value'=>$records[$i]->imex_time
+                                                    ],
+                                                    'remark'=>[
+                                                        'value'=>$records[$i]->temp==0?' ':'体温：'.$records[$i]->temp
+                                                    ],
+                                                ],
+                                            ];
+                                            $notifyList = new NotifyList();
+                                            $notifyList->open_id = $schoolNotify->open_id;
+                                            $notifyList->user_id = $schoolNotify->user_id;
+                                            $notifyList->mtime = $records[$i]->imex_time;
+                                            $notifyList->content = json_encode($data);
+                                            $notifyList->stu_num = $records[$i]->stu_number;
+                                            $notifyList->save();
+                                        }
 
 //                                dump($data);
 //                                $access_token=getUserToken('access_token');
@@ -304,9 +315,19 @@ class Notify extends Command
 //                                    $redata = $wx->request($url,json_encode($data));
 //                                    dump($redata);
 //
-                                DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
-                            }else{
-                            }DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
+//                                        DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>3]);
+//
+//
+//                                }else{
+//                                    setRedisData('refresh',1);
+//                                }
+                                    }else{
+
+                                    }
+                                }
+                                DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>2]);
+                            }
+                            DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>4]);
                         }else{
                             DB::connection('mysql_xijiao')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>5]);
                         }

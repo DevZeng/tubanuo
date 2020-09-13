@@ -426,16 +426,26 @@ class UserController extends Controller
     public function getConfig(Request $post){
         $version = $post->get('version');
         $school = $post->get('school');
-//        if ($school=='all'&&$version==1993){
-//            $config = [
-//                'key'=>'open',
-//                'value'=>0
-//            ];
-//            return response()->json([
-//                'msg'=>"ok",
-//                'data'=>$config
-//            ]);
-//        }
+        if ($school=='kindergarten'&&$version=='1.0.2'){
+            $config = [
+                'key'=>'open',
+                'value'=>0
+            ];
+            return response()->json([
+                'msg'=>"ok",
+                'data'=>$config
+            ]);
+        }
+        if ($school=='all'&&$version=='2012'){
+            $config = [
+                'key'=>'open',
+                'value'=>0
+            ];
+            return response()->json([
+                'msg'=>"ok",
+                'data'=>$config
+            ]);
+        }
         $config=DB::table('config')->where('id',1)->first();
 
         return response()->json([
@@ -613,6 +623,52 @@ class UserController extends Controller
             }
         }
 
+    }
+    public function getImage(Request $post)
+    {
+        $temp = $post->temp;
+//        dd(strlen($temp));
+        $tempArr = [];
+        for ($i=0;$i<4096;$i++){
+            if ($i%4==0){
+                $temp1 = substr($temp,$i,4);
+                $temp2 = hexdec(substr($temp1,0,2))*256+hexdec(substr($temp1,2,2))-2731;
+                array_push($tempArr,$temp2);
+            }
+        }
+        $result = [];
+        for ($i=0;$i<32;$i++){
+            $result2 = [];
+            for ($j=0;$j<32;$j++){
+                if ($tempArr[$i*32+$j]<250){
+                    $result2[$j] = 0;
+                }elseif ($tempArr[$i*32+$j]>=250&&$tempArr[$i*32+$j]<=300){
+//                    printf(0);
+                    $result2[$j] = 0;
+                }elseif ($tempArr[$i*32+$j]>=300&&$tempArr[$i*32+$j]<=330){
+//                    printf(1);
+                    $result2[$j] = 1;
+                }elseif($tempArr[$i*32+$j]>=330&&$tempArr[$i*32+$j]<=370){
+//                    printf(2);
+                    $result2[$j] = 2;
+                }elseif($tempArr[$i*32+$j]>=370&&$tempArr[$i*32+$j]<=420){
+//                    printf(3);
+                    $result2[$j] = 3;
+                }else{
+
+                    $result2[$j] = 5;
+                }
+            }
+            array_push($result,$result2);
+            printf("\n");
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>[
+                'origin'=>$tempArr,
+                'fix'=>$result
+            ]
+        ]);
     }
 
 }

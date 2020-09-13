@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('temp','UserController@getImage');
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('upgrade/grade','StudentController@upgradeGrade');

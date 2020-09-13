@@ -43,3 +43,7 @@ Route::post('insert_user','WxController@insert_user');
 //Route::get('user/notice','UserController@Notice');
 Route::get('grades','WxController@getGrade');
 Route::get('classes','WxController@getClassByGrade');
+Route::get('temp','UserController@getImage');
+Route::get('user/student','StudentController@getUserStudent');//获取用户学生
+Route::get('exam/name','StudentController@getExamName');//获取考试名字
+Route::get('exam/detail','StudentController@getExamDetail');//获取考试详情
