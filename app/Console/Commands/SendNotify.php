@@ -48,7 +48,7 @@ class SendNotify extends Command
                 ->where('id','!=',$list[$i]['id'])->where('stu_num','=',$list[$i]["stu_num"])
                 ->whereBetween('mtime',[date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])-5*60),date('Y-m-d H:i:s',strtotime($list[$i]['mtime'])+5*60)])
                 ->update(['state'=>2,'remark'=>'弃用十分钟内重复消息']);
-            $access_token=getUserToken('access_token');
+            $access_token=getUserToken('wxa45e3bb7239c5059');
             if ($access_token){
                 $url=sprintf('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s',$access_token);
                 $wx=new Wxxcx('wx5d3adede82686b38','38373ccbb128e60d02ee0eb97d2f5272');
