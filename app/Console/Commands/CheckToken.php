@@ -47,7 +47,7 @@ class CheckToken extends Command
                 $wx = new Wxxcx('wxa45e3bb7239c5059','2f0f6280dea9047347bd193747750bf8');
                 $data = $wx->request($url);
                 if (isset($data['access_token'])){
-                    setRedisData('access_token',$data['access_token'],7000);
+                    setRedisData('wxa45e3bb7239c5059',$data['access_token'],7000);
                     setRedisData('refresh',2);
 //                $access_token = $data['access_token'];
                 }
@@ -57,7 +57,7 @@ class CheckToken extends Command
             $wx = new Wxxcx('wxa45e3bb7239c5059','2f0f6280dea9047347bd193747750bf8');
             $data = $wx->request($url);
             if (isset($data['access_token'])){
-                setRedisData('access_token',$data['access_token'],7000);
+                setRedisData('wxa45e3bb7239c5059',$data['access_token'],7000);
                 setRedisData('refresh',2);
             }
         }
