@@ -431,7 +431,7 @@ class UserController extends Controller
 //                'key'=>'open',
 //                'value'=>0
 //            ];
-//            return response()->json([
+//            return responsetSchoolNotifyse()->json([
 //                'msg'=>"ok",
 //                'data'=>$config
 //            ]);
@@ -446,6 +446,16 @@ class UserController extends Controller
 //                'data'=>$config
 //            ]);
 //        }
+        if ($school=='shiqi'&&$version=='25'){
+            $config = [
+               'key'=>'open',
+               'value'=>0
+            ];
+            return responsetSchoolNotifyse()->json([
+                'msg'=>"ok",
+               'data'=>$config
+           ]);
+       }
         $config=DB::table('config')->where('id',1)->first();
 
         return response()->json([
