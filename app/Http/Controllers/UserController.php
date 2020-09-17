@@ -451,10 +451,10 @@ class UserController extends Controller
                'key'=>'open',
                'value'=>0
             ];
-            return responsetSchoolNotifyse()->json([
+            return response()->json([
                 'msg'=>"ok",
-               'data'=>$config
-           ]);
+                'data'=>$config
+            ]);
        }
         $config=DB::table('config')->where('id',1)->first();
 
