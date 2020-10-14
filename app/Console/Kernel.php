@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\CheckToken;
 use App\Console\Commands\FixData;
+use App\Console\Commands\getNotifyQueue;
 use App\Console\Commands\Notice;
 use App\Console\Commands\Notify;
 use App\Console\Commands\Push;
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
         //Notice::class
         Notify::class,
         FixData::class,
+        getNotifyQueue::class,
         SendNotify::class
         //
     ];
@@ -43,6 +45,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('notify huxun')->everyMinute();
         $schedule->command('notify xijiao')->everyMinute();
         $schedule->command('notify shiqi')->everyMinute();
+        $schedule->command('getNotifyQueue')->everyMinute();
         $schedule->command('sendNotify')->everyMinute();
         //$schedule->command('notice')->everyMinute();
     }

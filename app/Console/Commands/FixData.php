@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Libraries\WxPay;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +40,26 @@ class FixData extends Command
     public function handle()
     {
         //
+        $xml='<?xml version="1.0" encoding="UTF-8"?><DATA>
+<RECORD no="2" code="sa" msg="OD"> </RECORD>
+        <RECORD no="3" code="s23a" msg="OdD">
+        <ID>DFDS</ID>
+         </RECORD>
+</DATA>
+        ';
+        $wx = WxPay::xmlToArray($xml);
+        foreach ($wx as $item){
+            dd($item[0]['@attributes']);
+        }
+        dump($wx);
+        die();
+        $wxpay = new WxPay('wx1da902426c4dc72b','1601515017','4d682c7755b188141940d2d60dd17b1f',
+            $wx['openid']);
+        $signData = $wx;
+        unset($signData['sign']);
+
+        $sign = $wxpay->getSign($signData);
+        dd($sign);
         $schoolName = $this->argument('param1');
         $config = [
             'longtouhuan'=>'龙头环小学',

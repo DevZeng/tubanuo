@@ -41,7 +41,16 @@ class SendNotify extends Command
     public function handle()
     {
         //
-        $list = NotifyList::where('state','=',1)->orderBy('id','DESC')->groupBy('user_id')->get()->toArray();
+        $idArrayString = getRedisData('tubanuo_notify_queues');
+        if ($idArrayString){
+            $idArray = unserialize($idArrayString);
+            if (count($idArray)==0){
+                return;
+            }
+        }else{
+            return ;
+        }
+        $list = NotifyList::whereIn('id',$idArray)->get()->toArray();
         for ($i=0;$i<count($list);$i++){
 //                    DB::
             NotifyList::where('user_id','=',$list[$i]['user_id'])
@@ -73,7 +82,7 @@ class SendNotify extends Command
                 break;
             }
 //            DB::connection('mysql_shiqi')->table('fb_school')->where('id','=',$records[$i]->id)->update(['notify'=>99]);
-
+            setRedisData('tubanuo_notify_queues',serialize([]),getRedisTime());
         }
 //        dd($list);
     }
