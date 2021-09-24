@@ -176,7 +176,7 @@ class Notify extends Command
                     }
                 }
                 break;
-            case 'shiqi':
+            case 'shiqi1':
                 $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
@@ -255,7 +255,7 @@ class Notify extends Command
                     }
                 }
                 break;
-            case 'xijiao':
+            case 'xijiao1':
                 $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){

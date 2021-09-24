@@ -524,6 +524,9 @@ class UserController extends Controller
             'msg'=>'ok'
         ]);
     }
+
+
+
     public function setSchoolNotify(Request $post)
     {
         $school = $post->get('school');
