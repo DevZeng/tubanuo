@@ -255,7 +255,7 @@ class Notify extends Command
                     }
                 }
                 break;
-            case 'xijiao1':
+            case 'xijiao':
                 $records = DB::connection('mysql_xijiao')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
