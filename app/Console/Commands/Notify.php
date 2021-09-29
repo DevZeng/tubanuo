@@ -176,7 +176,7 @@ class Notify extends Command
                     }
                 }
                 break;
-            case 'shiqi1':
+            case 'shiqi':
                 $records = DB::connection('mysql_shiqi')->table('fb_school')->where('notify','=',1)->where('imex_time','like',$day."%")->get();
 //                dump($records);
                 if (count($records )!=0){
